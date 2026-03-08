@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+      content="Rohit Aware — React Native Developer. Building production cross-platform mobile apps for Android and iOS. Based in Pune, working in Mumbai." />
+    <meta name="keywords" content="React Native, Mobile Developer, iOS, Android, Pune, Mumbai" />
+    <meta property="og:title"       content="Rohit Aware — React Native Developer" />
+    <meta property="og:description" content="Building production cross-platform mobile apps." />
+    <meta property="og:type"        content="website" />
+    <title>Rohit Aware · React Native Developer | Pune</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
+    <!-- Theme flash prevention — MUST run before first paint -->
+    <script>
+      (function(){
+        try{
+          var t=localStorage.getItem('theme');
+          var sys=window.matchMedia('(prefers-color-scheme:dark)').matches;
+          var dark=t==='dark'||(!t&&sys)||t===null;
+          document.documentElement.classList.toggle('dark',dark);
+        }catch(e){}
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Skip link for keyboard users -->
+    <a href="#main-content"
+       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4
+              focus:z-[9999] focus:px-4 focus:py-2 focus:bg-primary
+              focus:text-primary-foreground focus:rounded-xl focus:font-semibold
+              focus:outline-none focus:ring-2 focus:ring-ring">
+      Skip to main content
+    </a>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
