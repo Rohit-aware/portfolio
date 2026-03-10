@@ -15,22 +15,23 @@ const HeroSection: React.FC = memo(() => {
   const toContact = useCallback(() => scrollToSection('contact'), [])
 
   return (
-    /*
-      Layout strategy (mobile-first):
-      - flex-col so we can place ScrollCue as a natural flex child at the bottom
-      - flex-1 on the content area fills remaining space and centers the grid within it
-      - This removes the centering dead-zone on tall phones (S20 Ultra 915px etc.)
-      - On lg: grid shows right column (globe/phone) so centering stays nice
-    */
     <section
       id="hero"
       aria-label="Introduction"
-      className="relative min-h-screen flex flex-col pt-14 overflow-x-clip"
+      className={[
+        'relative flex flex-col pt-14 overflow-x-clip',
+        // Mobile: full viewport so hero fills the screen and scroll cue pins to bottom
+        // 100svh instead of 100vh — accounts for browser chrome (address bar) on mobile
+        'min-h-[100svh]',
+        // Desktop: let content height + padding decide the section height.
+        // No wasted space — the globe visual fills the right column naturally.
+        'lg:min-h-0',
+      ].join(' ')}
     >
       {/* Background grid */}
       <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
 
-      {/* Glow orbs — right-0/left-0 so they never push a horizontal scrollbar */}
+      {/* Glow orbs */}
       <div
         aria-hidden="true"
         className="hero-glow w-64 h-64 sm:w-96 sm:h-96 -top-16 right-0 opacity-15 pointer-events-none"
@@ -43,18 +44,16 @@ const HeroSection: React.FC = memo(() => {
       />
 
       {/*
-        flex-1 + flex items-center  →  this div fills all space between navbar and
-        the ScrollCue row, and centers the content grid vertically within itself.
-        On very tall phones the grid still has breathing room but no excessive gaps.
+        Mobile:  flex-1 fills space between navbar and scroll cue, centers grid vertically
+        Desktop: lg:flex-none + explicit padding drives the height — no stretching
       */}
-      <div className="section-container relative z-10 w-full flex-1 flex items-center py-8 sm:py-10 lg:py-16">
+      <div className="section-container relative z-10 w-full flex-1 lg:flex-none flex items-center py-10 sm:py-12 lg:py-20">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
 
-          {/* ── Left: Text column ── */}
+          {/* ── Left: Text ── */}
           <div className="flex flex-col min-w-0">
             <HeroBadge />
 
-            {/* Name */}
             <div
               className="mb-4 animate-fade-in-up"
               style={{ animationDelay: '80ms', animationFillMode: 'both' }}
@@ -67,7 +66,6 @@ const HeroSection: React.FC = memo(() => {
               </h1>
             </div>
 
-            {/* Role */}
             <h2
               className="text-base sm:text-xl text-muted-foreground font-medium mb-4 animate-fade-in-up"
               style={{ animationDelay: '160ms', animationFillMode: 'both' }}
@@ -75,7 +73,6 @@ const HeroSection: React.FC = memo(() => {
               {SITE_META.role}
             </h2>
 
-            {/* Bio */}
             <p
               className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-lg animate-fade-in-up"
               style={{ animationDelay: '220ms', animationFillMode: 'both' }}
@@ -85,7 +82,6 @@ const HeroSection: React.FC = memo(() => {
 
             <HeroHighlights />
 
-            {/* CTAs — two buttons on one line, socials on next line */}
             <div
               className="animate-fade-in-up mb-8"
               style={{ animationDelay: '380ms', animationFillMode: 'both' }}
@@ -108,9 +104,9 @@ const HeroSection: React.FC = memo(() => {
       </div>
 
       {/*
-        ScrollCue sits as a natural flex child after the content area.
-        No more absolute positioning dead-zone on tall phones.
-        pb-4 gives a small bottom margin.
+        Scroll cue:
+        Mobile  — natural flex child at bottom of the min-h-[100svh] section → pinned to bottom
+        Desktop — hidden (desktop users don't need a scroll hint; page height is content-driven)
       */}
       <div className="relative z-20 flex justify-center pb-4 sm:pb-6">
         {FLAGS.SECTION_ABOUT && <HeroScrollCue />}

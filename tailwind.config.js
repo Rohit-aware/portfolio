@@ -17,6 +17,14 @@ export default {
         body: ["'Plus Jakarta Sans'", 'sans-serif'],
         mono: ["'JetBrains Mono'", 'monospace'],
       },
+      // 100svh = viewport height minus browser chrome (address bar, nav bar on iOS/Android)
+      // This is the correct unit for "full screen" on mobile
+      height: {
+        'svh': '100svh',
+      },
+      minHeight: {
+        'svh': '100svh',
+      },
       colors: {
         background: 'hsl(var(--background) / <alpha-value>)',
         foreground: 'hsl(var(--foreground) / <alpha-value>)',
