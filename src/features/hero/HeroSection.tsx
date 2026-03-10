@@ -18,15 +18,7 @@ const HeroSection: React.FC = memo(() => {
     <section
       id="hero"
       aria-label="Introduction"
-      className={[
-        'relative flex flex-col pt-14 overflow-x-clip',
-        // Mobile: full viewport so hero fills the screen and scroll cue pins to bottom
-        // 100svh instead of 100vh — accounts for browser chrome (address bar) on mobile
-        'min-h-[100svh]',
-        // Desktop: let content height + padding decide the section height.
-        // No wasted space — the globe visual fills the right column naturally.
-        'lg:min-h-0',
-      ].join(' ')}
+      className="relative flex flex-col pt-14 overflow-x-clip lg:min-h-0"
     >
       {/* Background grid */}
       <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
@@ -44,13 +36,13 @@ const HeroSection: React.FC = memo(() => {
       />
 
       {/*
-        Mobile:  flex-1 fills space between navbar and scroll cue, centers grid vertically
-        Desktop: lg:flex-none + explicit padding drives the height — no stretching
+        NO flex-1 here — content div is exactly as tall as its children.
+        Padding drives the top spacing only. No vertical stretch.
       */}
-      <div className="section-container relative z-10 w-full flex-1 lg:flex-none flex items-center py-10 sm:py-12 lg:py-20">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="section-container relative z-10 w-full pt-6 sm:pt-10 lg:pt-16 pb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
 
-          {/* ── Left: Text ── */}
+          {/* Left: Text */}
           <div className="flex flex-col min-w-0">
             <HeroBadge />
 
@@ -98,17 +90,20 @@ const HeroSection: React.FC = memo(() => {
             <HeroStats />
           </div>
 
-          {/* ── Right: Visual (desktop only) ── */}
+          {/* Right: Visual (desktop only) */}
           <HeroVisual />
         </div>
       </div>
 
       {/*
-        Scroll cue:
-        Mobile  — natural flex child at bottom of the min-h-[100svh] section → pinned to bottom
-        Desktop — hidden (desktop users don't need a scroll hint; page height is content-driven)
+        flex-1 spacer: absorbs all leftover height of min-h-[100svh] on mobile.
+        This pushes the scroll cue to the bottom WITHOUT stretching the content div.
+        On desktop (lg:min-h-0) this spacer collapses to zero — no effect.
       */}
-      <div className="relative z-20 flex justify-center pb-4 sm:pb-6">
+      <div className="flex-1 lg:hidden" aria-hidden="true" />
+
+      {/* Scroll cue — pinned to bottom on mobile, hidden on desktop */}
+      <div className="relative z-20 flex justify-center py-4 lg:hidden">
         {FLAGS.SECTION_ABOUT && <HeroScrollCue />}
       </div>
     </section>

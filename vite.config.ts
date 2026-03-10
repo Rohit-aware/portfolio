@@ -4,6 +4,9 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    host: true
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
@@ -14,7 +17,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          icons:  ['lucide-react'],
+          icons: ['lucide-react'],
         },
       },
     },
