@@ -45,6 +45,7 @@ const ProjectsSection: React.FC = memo(() => {
             <p className="text-sm text-muted-foreground mt-2">Production applications built at Mypcot Infotech.</p>
           </div>
 
+          {/* Filter pills */}
           <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center mb-6 sm:mb-8" role="group" aria-label="Filter by category">
             {PROJECT_FILTERS.map(f => (
               <button key={f} onClick={() => handleFilter(f)} aria-pressed={activeFilter === f}
@@ -54,8 +55,13 @@ const ProjectsSection: React.FC = memo(() => {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-3 lg:gap-4 lg:items-start">
-            <div className="flex flex-col gap-1 lg:sticky lg:top-24">
+          <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-3 lg:gap-4 lg:items-start">
+
+            {/* Project list
+                Mobile:  horizontal scrollable pill row (no-scrollbar hides the track)
+                Desktop: vertical sticky sidebar
+            */}
+            <div className="flex flex-row gap-2 overflow-x-auto pb-1 no-scrollbar lg:flex-col lg:overflow-x-visible lg:sticky lg:top-24">
               {filtered.map((p, i) => (
                 <ProjectListItem
                   key={p.id}
@@ -69,6 +75,8 @@ const ProjectsSection: React.FC = memo(() => {
                 />
               ))}
             </div>
+
+            {/* Detail panel */}
             <div>
               {activeProject
                 ? <ProjectDetail key={activeProject.id} project={activeProject} />

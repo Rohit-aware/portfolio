@@ -92,11 +92,20 @@ const ConstellationSkills: React.FC = memo(() => {
             </p>
           </div>
 
-          <div className="flex flex-col xl:flex-row items-start justify-center gap-6">
-            {/* SVG */}
-            <div className="relative shrink-0 mx-auto xl:mx-0" style={{ width: SVG_SIZE, height: SVG_SIZE, maxWidth: '100%' }}>
-              <svg viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`} className="w-full h-full"
-                role="img" aria-label="Interactive skill constellation. Hover nodes to inspect skills.">
+          {/* SVG + sidebar — stack vertically on mobile, side-by-side on xl */}
+          <div className="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-6 w-full">
+
+            {/* SVG container — aspect-ratio:1/1 keeps it square as width shrinks */}
+            <div
+              className="relative w-full xl:w-[420px] shrink-0 mx-auto xl:mx-0"
+              style={{ aspectRatio: '1 / 1', maxWidth: 420 }}
+            >
+              <svg
+                viewBox={`0 0 ${SVG_SIZE} ${SVG_SIZE}`}
+                className="w-full h-full"
+                role="img"
+                aria-label="Interactive skill constellation. Hover nodes to inspect skills."
+              >
                 <defs>
                   {TIER_ORDER.map(tier => (
                     <filter key={tier} id={`glow-${tier}`} x="-50%" y="-50%" width="200%" height="200%">
@@ -106,17 +115,20 @@ const ConstellationSkills: React.FC = memo(() => {
                   ))}
                 </defs>
 
+                {/* Orbit rings */}
                 {TIER_ORDER.map((tier, i) => (
                   <circle key={`ring-${tier}`} cx={CX} cy={CY} r={RING_RADII[i]}
                     fill="none" stroke={TIER_STYLE[tier].ringStroke} strokeWidth="1"
                     strokeDasharray={i === 0 ? '5 5' : i === 1 ? '3 6' : '2 9'} />
                 ))}
 
+                {/* Centre node */}
                 <circle cx={CX} cy={CY} r={24} fill="hsl(var(--primary) / 0.07)" stroke="hsl(var(--primary) / 0.22)" strokeWidth="1" />
                 <circle cx={CX} cy={CY} r={14} fill="hsl(var(--primary) / 0.13)" />
                 <text x={CX} y={CY + 1} textAnchor="middle" dominantBaseline="middle"
                   fill="hsl(var(--primary))" fontSize="9" fontWeight="700" fontFamily="monospace">RA</text>
 
+                {/* Expert spokes */}
                 {ALL_NODES.filter(n => n.tier === 'expert').map(n => {
                   const pos = getPos(n)
                   return (
@@ -126,6 +138,7 @@ const ConstellationSkills: React.FC = memo(() => {
                   )
                 })}
 
+                {/* Skill nodes */}
                 {TIER_ORDER.map(tier =>
                   ALL_NODES.filter(n => n.tier === tier).map(n => {
                     const pos = getPos(n)

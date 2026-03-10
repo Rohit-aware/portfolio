@@ -1,11 +1,11 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
 
 export interface TypedLineProps {
-  readonly text:    string
+  readonly text: string
   readonly colour?: string
-  readonly bold?:   boolean
-  readonly done:    boolean
-  readonly isLast:  boolean
+  readonly bold?: boolean
+  readonly done: boolean
+  readonly isLast: boolean
 }
 
 const TypedLine: React.FC<TypedLineProps> = memo(({ text, colour, bold, done, isLast }) => {
@@ -32,8 +32,11 @@ const TypedLine: React.FC<TypedLineProps> = memo(({ text, colour, bold, done, is
   }, [done, text])
 
   const style: React.CSSProperties = {
-    color:      colour ?? '#a3e635',
+    color: colour ?? '#a3e635',
     fontWeight: bold ? 700 : 400,
+    // whitespace:nowrap keeps each line intact;
+    // the parent terminal body has overflow-x:auto so it scrolls inside the box
+    whiteSpace: 'nowrap',
   }
 
   return (

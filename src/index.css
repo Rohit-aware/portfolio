@@ -7,32 +7,32 @@
    DESIGN TOKENS
    ───────────────────────────────────────────────────────────── */
 :root {
-  --background:       215 25% 7%;
-  --foreground:       215 20% 93%;
-  --card:             215 22% 10%;
-  --card-foreground:  215 20% 93%;
-  --surface:          215 20% 12%;
-  --surface-elevated: 215 18% 15%;
-  --primary:          205 82% 58%;
+  --background:         215 25% 7%;
+  --foreground:         215 20% 93%;
+  --card:               215 22% 10%;
+  --card-foreground:    215 20% 93%;
+  --surface:            215 20% 12%;
+  --surface-elevated:   215 18% 15%;
+  --primary:            205 82% 58%;
   --primary-foreground: 215 25% 7%;
-  --secondary:        215 18% 16%;
+  --secondary:          215 18% 16%;
   --secondary-foreground: 215 18% 80%;
-  --muted:            215 18% 13%;
-  --muted-foreground: 215 12% 50%;
-  --border:           215 15% 16%;
-  --ring:             205 82% 58%;
-  --gradient-start:   205 82% 60%;
-  --gradient-mid:     220 75% 62%;
-  --gradient-end:     235 68% 60%;
+  --muted:              215 18% 13%;
+  --muted-foreground:   215 12% 50%;
+  --border:             215 15% 16%;
+  --ring:               205 82% 58%;
+  --gradient-start:     205 82% 60%;
+  --gradient-mid:       220 75% 62%;
+  --gradient-end:       235 68% 60%;
 }
 .dark {
-  --background:       215 25% 7%;  --foreground:       215 20% 93%;
-  --card:             215 22% 10%; --card-foreground:  215 20% 93%;
-  --surface:          215 20% 12%; --surface-elevated: 215 18% 15%;
-  --primary:          205 82% 58%; --primary-foreground: 215 25% 7%;
-  --secondary:        215 18% 16%; --secondary-foreground: 215 18% 80%;
-  --muted:            215 18% 13%; --muted-foreground: 215 12% 50%;
-  --border:           215 15% 16%; --ring: 205 82% 58%;
+  --background:         215 25% 7%;  --foreground:       215 20% 93%;
+  --card:               215 22% 10%; --card-foreground:  215 20% 93%;
+  --surface:            215 20% 12%; --surface-elevated: 215 18% 15%;
+  --primary:            205 82% 58%; --primary-foreground: 215 25% 7%;
+  --secondary:          215 18% 16%; --secondary-foreground: 215 18% 80%;
+  --muted:              215 18% 13%; --muted-foreground: 215 12% 50%;
+  --border:             215 15% 16%; --ring: 205 82% 58%;
 }
 html:not(.dark) {
   --background: 215 20% 98%; --foreground: 215 22% 9%;
@@ -55,6 +55,8 @@ html:not(.dark) {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     cursor: none;
+    /* iOS Safari: overflow-x must be on BOTH html AND body */
+    overflow-x: hidden;
   }
   @media (pointer: coarse) {
     html { cursor: auto; }
@@ -86,7 +88,7 @@ html:not(.dark) {
    COMPONENT UTILITIES
    ───────────────────────────────────────────────────────────── */
 @layer components {
-  /* ── LAYOUT — full width use of screen ── */
+  /* ── LAYOUT ── */
   .section-container { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-10; }
   .section-padding   { @apply py-10 sm:py-14 lg:py-20; }
 
@@ -96,7 +98,7 @@ html:not(.dark) {
     letter-spacing: -0.035em;
     line-height: 1.02;
   }
-  .heading-lg  { @apply text-2xl sm:text-3xl font-bold;   letter-spacing: -0.025em; }
+  .heading-lg  { @apply text-2xl sm:text-3xl font-bold;     letter-spacing: -0.025em; }
   .heading-md  { @apply text-base sm:text-xl font-semibold; letter-spacing: -0.015em; }
 
   /* ── GRADIENT TEXT ── */
@@ -119,31 +121,31 @@ html:not(.dark) {
 
   /* ── BUTTONS ── */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl
            font-semibold text-sm bg-primary text-primary-foreground
            transition-all duration-200 active:scale-95;
   }
-  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-primary:hover       { filter: brightness(1.1); }
   .btn-primary:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
   }
   .btn-outline {
-    @apply inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl
            font-semibold text-sm border border-border text-foreground
            transition-all duration-200 active:scale-95;
   }
-  .btn-outline:hover  { border-color: hsl(var(--primary)/0.45); background: hsl(var(--primary)/0.05); }
+  .btn-outline:hover       { border-color: hsl(var(--primary)/0.45); background: hsl(var(--primary)/0.05); }
   .btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px hsl(var(--ring)/0.5); }
 
   /* ── TAGS ── */
   .tag {
-    @apply inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg
+    @apply inline-flex items-center px-2 py-0.5 rounded-lg
            text-xs font-medium font-mono bg-primary/10 text-primary border border-primary/20;
   }
 
   /* ── SCROLL REVEAL ── */
-  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+  .reveal         { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   /* ── DELAYS ── */
@@ -173,10 +175,7 @@ html:not(.dark) {
 /* ─────────────────────────────────────────────────────────────
    3D PHONE MOCKUP
    ───────────────────────────────────────────────────────────── */
-.phone-wrapper {
-  perspective: 1000px;
-  perspective-origin: 50% 50%;
-}
+.phone-wrapper { perspective: 1000px; perspective-origin: 50% 50%; }
 .phone-3d {
   transform-style: preserve-3d;
   transition: transform 0.12s ease-out;
@@ -187,7 +186,6 @@ html:not(.dark) {
   50%      { transform: rotateX(-2deg) rotateY(6deg) translateY(-14px); }
 }
 .phone-float { animation: phoneFloat 5s ease-in-out infinite; }
-
 .phone-screen-glow {
   position: absolute; inset: 0; border-radius: inherit;
   background: radial-gradient(ellipse at 30% 30%, hsl(var(--primary)/0.35) 0%, transparent 65%);
@@ -198,10 +196,10 @@ html:not(.dark) {
    EMOJI CLOUD
    ───────────────────────────────────────────────────────────── */
 @keyframes emojiFloat {
-  0%   { transform: translateY(0)    scale(0)   rotate(0deg);   opacity: 0; }
-  15%  { transform: translateY(-20px) scale(1.2) rotate(-8deg);  opacity: 1; }
-  85%  { transform: translateY(-110px) scale(1)  rotate(10deg);  opacity: 0.8; }
-  100% { transform: translateY(-140px) scale(0.6) rotate(15deg); opacity: 0; }
+  0%   { transform: translateY(0)      scale(0)   rotate(0deg);   opacity: 0; }
+  15%  { transform: translateY(-20px)  scale(1.2) rotate(-8deg);  opacity: 1; }
+  85%  { transform: translateY(-110px) scale(1)   rotate(10deg);  opacity: 0.8; }
+  100% { transform: translateY(-140px) scale(0.6) rotate(15deg);  opacity: 0; }
 }
 .emoji-particle {
   position: absolute;
@@ -224,16 +222,12 @@ html:not(.dark) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   SCROLL ORB
+   SCROLL ORB / NAV SLIDE-IN / FADE-IN ANIMATIONS
    ───────────────────────────────────────────────────────────── */
 @keyframes orbPulse {
   0%, 100% { transform: scale(1);   opacity: 0.6; }
-  50%       { transform: scale(1.5); opacity: 1;   }
+  50%       { transform: scale(1.5); opacity: 1; }
 }
-
-/* ─────────────────────────────────────────────────────────────
-   NAV SLIDE-IN
-   ───────────────────────────────────────────────────────────── */
 @keyframes navSlideDown {
   from { transform: translateY(-100%); opacity: 0; }
   to   { transform: translateY(0);     opacity: 1; }
@@ -245,34 +239,51 @@ html:not(.dark) {
   to   { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in-up { animation: fadeInUp 0.55s ease-out both; }
-.animate-fade-in    { animation: fadeInUp 0.4s ease-out both; }
+.animate-fade-in    { animation: fadeInUp 0.4s  ease-out both; }
 
 @keyframes scrollBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
 
 /* ─────────────────────────────────────────────────────────────
-   MOBILE OVERRIDES — prevent cramping
+   MOBILE OVERRIDES
+   Tested at 320 / 375 / 390 / 414 px
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
+  .heading-xl    { font-size: 1.85rem; line-height: 1.1; }
+  .heading-lg    { font-size: 1.5rem; }
   .section-padding { padding-top: 2.5rem; padding-bottom: 2.5rem; }
-  .heading-xl { font-size: 2rem; }
-  .card-glass { border-radius: 1rem; }
+  .card-glass    { border-radius: 1rem; }
+  /* Hard clip on every section — nothing can bleed past viewport */
+  section        { overflow-x: clip; }
+}
+@media (max-width: 400px) {
+  .heading-xl { font-size: 1.65rem; }
 }
 
-/* ── CONSTELLATION SKILLS ANIMATIONS ────── */
+/* ─────────────────────────────────────────────────────────────
+   CONSTELLATION SKILLS
+   ───────────────────────────────────────────────────────────── */
 @keyframes pulseRing {
   0%   { r: 12; opacity: 0.8; }
   100% { r: 20; opacity: 0; }
 }
 
-/* ── BLINK cursor for terminal ── */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
+/* ─────────────────────────────────────────────────────────────
+   TERMINAL CURSOR BLINK
+   ───────────────────────────────────────────────────────────── */
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 .animate-blink { animation: blink 1s step-end infinite; }
 
-/* ── CHAT dot bounce ── */
+/* ─────────────────────────────────────────────────────────────
+   HIDE SCROLLBAR — keep scroll, hide track
+   Used on horizontal project pill list etc.
+   ───────────────────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─────────────────────────────────────────────────────────────
+   CHAT DOT BOUNCE
+   ───────────────────────────────────────────────────────────── */
 @keyframes dotBounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  0%, 60%, 100% { transform: translateY(0);    opacity: 0.4; }
   30%            { transform: translateY(-5px); opacity: 1; }
 }
