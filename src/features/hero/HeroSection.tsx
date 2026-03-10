@@ -8,6 +8,7 @@ import HeroSocials from '@/features/hero/components/HeroSocials'
 import HeroStats from '@/features/hero/components/HeroStats'
 import HeroVisual from '@/features/hero/components/HeroVisual'
 import HeroScrollCue from '@/features/hero/components/HeroScrollCue'
+import { FLAGS } from '@/config/featureFlags'
 
 const HeroSection: React.FC = memo(() => {
   const toProjects = useCallback(() => scrollToSection('projects'), [])
@@ -78,8 +79,8 @@ const HeroSection: React.FC = memo(() => {
               style={{ animationDelay: '380ms', animationFillMode: 'both' }}
             >
               <div className="flex items-center gap-2 sm:gap-3">
-                <button onClick={toProjects} className="btn-primary">View Projects</button>
-                <button onClick={toContact} className="btn-outline">Get in Touch</button>
+                {FLAGS.SECTION_PROJECTS && <button onClick={toProjects} className="btn-primary">View Projects</button>}
+                {FLAGS.SECTION_CONTACT && <button onClick={toContact} className="btn-outline">Get in Touch</button>}
               </div>
               <div className="flex items-center gap-2 mt-3">
                 <HeroSocials />
@@ -103,7 +104,7 @@ const HeroSection: React.FC = memo(() => {
 
       {/* Scroll cue — pinned to bottom on mobile, hidden on desktop */}
       <div className="relative z-20 flex justify-center py-4 lg:hidden">
-        <HeroScrollCue />
+        {FLAGS.SECTION_ABOUT && <HeroScrollCue />}
       </div>
     </section>
   )
