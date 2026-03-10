@@ -7,7 +7,7 @@ const HeroHighlights: React.FC = memo(() => (
     className="flex flex-wrap gap-2 mb-6 animate-fade-in-up"
     style={{ animationDelay: '300ms', animationFillMode: 'both' }}
   >
-    {HERO_HIGHLIGHTS.map(({ icon: Icon, text, sub }) => (
+    {HERO_HIGHLIGHTS.map(({ icon: Icon, text, sub, show }) => show && (
       <div
         key={text}
         className={cn(
