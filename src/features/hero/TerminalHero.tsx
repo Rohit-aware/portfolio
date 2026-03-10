@@ -2,13 +2,8 @@ import React, { memo, useCallback } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { scrollToSection } from '@/shared/utils/scroll'
 import { useBootSequence } from '@/features/hero/hooks/useBootSequence'
-import TerminalWindow    from '@/features/hero/components/TerminalWindow'
+import TerminalWindow from '@/features/hero/components/TerminalWindow'
 
-/**
- * TerminalHero — retro CRT terminal aesthetic hero.
- * Active when FLAGS.HERO_TERMINAL = true.
- * Composition only — state + UI logic live in useBootSequence & subcomponents.
- */
 const TerminalHero: React.FC = memo(() => {
   const { revealedCount, allDone, showCommands } = useBootSequence()
   const toAbout = useCallback(() => scrollToSection('about'), [])
@@ -17,7 +12,7 @@ const TerminalHero: React.FC = memo(() => {
     <section
       id="hero"
       aria-label="Introduction"
-      className="relative min-h-screen flex items-center justify-center pt-14"
+      className="relative min-h-screen flex items-center justify-center pt-14 overflow-x-clip"
       style={{ background: '#020408' }}
     >
       {/* CRT scanline grid */}
