@@ -65,6 +65,7 @@ export interface Project {
   readonly webUrl?: string
   readonly githubUrl?: string
   readonly portfolioUrl: string
+  readonly projectImageUrl?: string
 }
 
 export interface Experience {
