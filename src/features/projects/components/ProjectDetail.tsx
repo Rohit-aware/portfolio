@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { ExternalLink, Github, Smartphone, Layers, ArrowRight } from 'lucide-react'
+import { ExternalLink, Github, Layers, ArrowRight } from 'lucide-react'
 import { PROJECTS_DATA } from '@/features/projects/constants/projects'
 
 type Project = (typeof PROJECTS_DATA)[number]
@@ -13,10 +13,11 @@ const ProjectDetail: React.FC<ProjectDetailProps> = memo(({ project }) => (
     <div className="relative h-44 rounded-xl bg-gradient-to-br from-surface to-surface-elevated border border-border flex items-center justify-center mb-5 overflow-hidden">
       <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern opacity-15" />
       <div className="relative z-10 flex flex-col items-center gap-2">
-        <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-          <Smartphone size={22} className="text-primary" aria-hidden="true" />
-        </div>
-        <span className="text-xs font-mono text-muted-foreground/40">[app screenshot]</span>
+        <img
+          src={project.projectImageUrl}
+          alt={project.title}
+          className="w-full h-full object-cover rounded-xl"
+        />
       </div>
       {project.hasMigration && (
         <div className="absolute top-3 left-3">

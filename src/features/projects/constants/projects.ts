@@ -1,4 +1,8 @@
 import type { Project } from '@/types'
+import ClmsImage from './projectImages/clms-all.webp';
+import TrolleyImage from './projectImages/trolly-all.webp';
+import MaakImage from './projectImages/maak-all.webp';
+import FantasyImage from './projectImages/fantasy-all.webp';
 
 export const PROJECTS_DATA: readonly Project[] = [
   {
@@ -32,7 +36,8 @@ export const PROJECTS_DATA: readonly Project[] = [
     migrationDetails:
       'Migrated React Native from v0.64 → v0.79.2, upgrading React Navigation, Redux Toolkit, and native dependencies.',
 
-    portfolioUrl: 'https://www.mypcot.com/portfolio/clms'
+    portfolioUrl: 'https://www.mypcot.com/portfolio/clms',
+    projectImageUrl: ClmsImage
   },
 
   {
@@ -65,7 +70,8 @@ export const PROJECTS_DATA: readonly Project[] = [
 
     hasMigration: false,
 
-    portfolioUrl: 'https://www.mypcot.com/portfolio/fantasy-eleven'
+    portfolioUrl: 'https://www.mypcot.com/portfolio/fantasy-eleven',
+    projectImageUrl: FantasyImage
   },
 
   {
@@ -97,7 +103,8 @@ export const PROJECTS_DATA: readonly Project[] = [
     hasMigration: true,
     migrationDetails:
       'Migrated React Native from v0.64 → v0.79.2 and updated dependencies and navigation libraries to support the latest architecture.',
-    portfolioUrl: 'https://www.mypcot.com/portfolio/trolley'
+    portfolioUrl: 'https://www.mypcot.com/portfolio/trolley',
+    projectImageUrl: TrolleyImage
   },
 
   {
@@ -132,7 +139,8 @@ export const PROJECTS_DATA: readonly Project[] = [
     migrationDetails:
       'Migrated React Native from v0.64 → v0.79.2 and updated all major dependencies to support the new architecture.',
 
-    portfolioUrl: 'https://www.mypcot.com/portfolio/maak'
+    portfolioUrl: 'https://www.mypcot.com/portfolio/maak',
+    projectImageUrl: MaakImage
   },
   {
     id: 'bnpl',
@@ -171,6 +179,7 @@ export const PROJECTS_DATA: readonly Project[] = [
     migrationDetails:
       'Upgraded React Native from v0.64 → v0.79 and refactored modules to support BNPL payment flows and QR payment features.',
 
-    portfolioUrl: 'https://www.mypcot.com/portfolio/maak'
+    portfolioUrl: 'https://www.mypcot.com/portfolio/maak',
+    projectImageUrl: './projectImages/bnpl-all.png'
   }
 ] as const
