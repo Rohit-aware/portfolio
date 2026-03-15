@@ -20,10 +20,8 @@ const HeroSection: React.FC = memo(() => {
       aria-label="Introduction"
       className="relative flex flex-col pt-14 overflow-x-clip lg:min-h-0"
     >
-      {/* Background grid */}
       <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
 
-      {/* Glow orbs */}
       <div
         aria-hidden="true"
         className="hero-glow w-64 h-64 sm:w-96 sm:h-96 -top-16 right-0 opacity-15 pointer-events-none"
@@ -35,14 +33,9 @@ const HeroSection: React.FC = memo(() => {
         style={{ background: 'radial-gradient(circle, hsl(var(--gradient-mid)) 0%, transparent 70%)' }}
       />
 
-      {/*
-        NO flex-1 here — content div is exactly as tall as its children.
-        Padding drives the top spacing only. No vertical stretch.
-      */}
       <div className="section-container relative z-10 w-full pt-6 sm:pt-10 lg:pt-16 pb-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
 
-          {/* Left: Text */}
           <div className="flex flex-col min-w-0">
             <HeroBadge />
 
@@ -90,19 +83,12 @@ const HeroSection: React.FC = memo(() => {
             <HeroStats />
           </div>
 
-          {/* Right: Visual (desktop only) */}
           <HeroVisual />
         </div>
       </div>
 
-      {/*
-        flex-1 spacer: absorbs all leftover height of min-h-[100svh] on mobile.
-        This pushes the scroll cue to the bottom WITHOUT stretching the content div.
-        On desktop (lg:min-h-0) this spacer collapses to zero — no effect.
-      */}
       <div className="flex-1 lg:hidden" aria-hidden="true" />
 
-      {/* Scroll cue — pinned to bottom on mobile, hidden on desktop */}
       <div className="relative z-20 flex justify-center py-4 lg:hidden">
         {FLAGS.SECTION_ABOUT && <HeroScrollCue />}
       </div>

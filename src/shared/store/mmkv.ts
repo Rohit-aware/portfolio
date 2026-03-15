@@ -8,14 +8,11 @@ const mmkvWebFallback: StateStorage = {
   getItem: (name: string): string | null => {
     const val = localStorage.getItem(name)
     if (!val) return null
-    
-    // For specific keys like 'theme' that legacy inline scripts rely on raw strings,
-    // we wrap them back into JSON for Zustand to read.
+
     if (name === 'theme' && !val.startsWith('{')) {
       return JSON.stringify({ state: { theme: val }, version: 0 })
     }
-    
-    // Similarly for raw visit counts
+
     if (name === 'ra-visit-count' && !val.startsWith('{')) {
       return JSON.stringify({ state: { total: parseInt(val, 10) }, version: 0 })
     }
@@ -23,24 +20,21 @@ const mmkvWebFallback: StateStorage = {
     return val
   },
   setItem: (name: string, value: string): void => {
-    // Unwrap raw values so independent UI scripts (like themeScript) can still read them natively.
     if (name === 'theme') {
       try {
         const parsed = JSON.parse(value)
         localStorage.setItem(name, parsed.state.theme)
         return
       } catch {
-        // Fallback to storing raw value if parsing fails
       }
     }
-    
+
     if (name === 'ra-visit-count') {
       try {
         const parsed = JSON.parse(value)
         localStorage.setItem(name, String(parsed.state.total))
         return
       } catch {
-        // Fallback
       }
     }
 
