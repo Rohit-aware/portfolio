@@ -21,8 +21,8 @@ export interface SocialLink {
 }
 
 export const HERO_STATS: readonly HeroStat[] = [
-  { value: '5+', label: 'Apps' },
-  { value: '3', label: 'Migrations' },
+  { value: '3+', label: 'Apps' },
+  { value: '3+', label: 'Migrations' },
   { value: '3+', label: 'Years Experience' },
 ] as const
 
@@ -35,5 +35,5 @@ export const HERO_HIGHLIGHTS: readonly HeroHighlight[] = [
 export const SOCIAL_LINKS: readonly SocialLink[] = [
   { href: SITE_META.linkedIn, icon: Linkedin, label: 'LinkedIn', external: true },
   { href: SITE_META.github, icon: Github, label: 'GitHub', external: true },
-  { href: `mailto:${SITE_META.email}`, icon: Mail, label: 'Email', external: false },
+  { href: `mailto:${SITE_META.email}`, icon: Mail, label: 'Email', external: true },
 ] as const

@@ -7,6 +7,5 @@ export const PROJECT_FILTERS: readonly FilterOption[] = [
   'Client Management',
   'Fantasy Sports',
   'E-Commerce',
-  'Fitness & Wellness',
   'Banking & Finance',
 ] as const

@@ -5,7 +5,6 @@ import { cn } from '@/shared/utils/cn'
 const HeroStats: React.FC = memo(() => (
   <div
     className={cn(
-      // w-full so it stretches to column width; equal flex-1 cells never overflow
       'flex items-stretch w-full rounded-2xl border border-border',
       'bg-card overflow-hidden animate-fade-in-up',
     )}
@@ -23,7 +22,6 @@ const HeroStats: React.FC = memo(() => (
           <span className="text-xl sm:text-2xl font-extrabold text-gradient leading-none mb-0.5">
             {stat.value}
           </span>
-          {/* text-center + leading-tight so two-word labels wrap inside the cell */}
           <span className="text-[10px] xs:text-xs text-muted-foreground text-center font-medium leading-tight px-1">
             {stat.label}
           </span>

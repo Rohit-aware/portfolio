@@ -4,7 +4,7 @@ import Footer from '@/components/layout/Footer'
 import Home from '@/pages/Home'
 import AnimatedCursor from '@/animations/AnimatedCursor'
 import AnalyticsBadge from '@/components/ui/AnalyticsBadge'
-import { useTheme } from '@/shared/hooks/useTheme'
+import { useTheme } from '@/features/theme/hooks/useTheme'
 import { FLAGS } from '@/config/featureFlags'
 
 /**
