@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { Eye } from 'lucide-react'
 import { cn } from '@/shared/utils/cn'
-import { useAnalytics } from '@/shared/hooks/useAnalytics'
+import { useAnalyticsStore } from '@/features/analytics/store/analyticsStore'
 
 /**
  * AnalyticsBadge — floating visitor counter in bottom-left corner.
@@ -10,7 +10,12 @@ import { useAnalytics } from '@/shared/hooks/useAnalytics'
  */
 
 const AnalyticsBadge: React.FC = memo(() => {
-  const { visitCount, isNewVisit, isLoading } = useAnalytics()
+  const { visitCount, isNewVisit, isLoading, recordVisit } = useAnalyticsStore()
+
+  // Fire analytics API call on mount
+  React.useEffect(() => {
+    recordVisit()
+  }, [recordVisit])
 
   return (
     <div

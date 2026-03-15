@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { Mail, Send, CheckCircle } from 'lucide-react'
 import { cn } from '@/shared/utils/cn'
 import { useContactForm } from '@/shared/hooks/useContactForm'
 import FormField from '@/features/contact/components/FormField'
@@ -22,26 +22,33 @@ const ContactForm: React.FC = memo(() => {
           id="contact-name" label="Name" name="name"
           value={formData.name} placeholder="Your name"
           required onChange={handleChange}
+          error={status === 'error' && !formData.name.trim()}
         />
         <FormField
           id="contact-email" label="Your Email" type="email" name="email"
           value={formData.email} placeholder="your@email.com"
           required onChange={handleChange}
+          error={status === 'error' && !formData.email.trim()}
         />
         <div>
           <label htmlFor="contact-message"
-            className="block text-xs font-mono text-muted-foreground mb-1.5 uppercase tracking-wider">
-            Message<span className="text-primary ml-0.5" aria-hidden="true">*</span>
+            className={cn(
+              "block text-xs font-mono mb-1.5 uppercase tracking-wider transition-colors",
+              status === 'error' && !formData.message.trim() ? "text-red-500 dark:text-red-400" : "text-muted-foreground"
+            )}>
+            Message<span className={cn("ml-0.5", status === 'error' && !formData.message.trim() ? "text-red-500 dark:text-red-400" : "text-primary")} aria-hidden="true">*</span>
           </label>
           <textarea
             id="contact-message" name="message" rows={5}
             value={formData.message} placeholder="Tell me about your project..."
             required onChange={handleChange}
             className={cn(
-              'w-full px-3.5 py-2.5 rounded-xl border border-border bg-surface',
+              'w-full px-3.5 py-2.5 rounded-xl border bg-surface',
               'text-sm text-foreground placeholder:text-muted-foreground/50',
-              'focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary/40',
-              'transition-colors duration-200 resize-none',
+              'focus:outline-none focus:ring-2 transition-all duration-200 resize-none',
+              status === 'error' && !formData.message.trim()
+                ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/20 dark:border-red-500/40 dark:focus:border-red-500'
+                : 'border-border focus:border-primary/40 focus:ring-ring'
             )}
           />
         </div>
@@ -58,16 +65,6 @@ const ContactForm: React.FC = memo(() => {
           )}>
             <CheckCircle size={15} className="shrink-0 mt-0.5" aria-hidden="true" />
             <span>Your mail app should open with everything filled in. Just hit send — I'll reply within 24 hours!</span>
-          </div>
-        )}
-
-        {status === 'error' && (
-          <div role="alert" className={cn(
-            'flex items-start gap-2 text-sm rounded-xl px-4 py-3',
-            'bg-red-400/10 border border-red-400/20 text-red-400',
-          )}>
-            <AlertCircle size={15} className="shrink-0 mt-0.5" aria-hidden="true" />
-            <span>Please fill in all fields before sending.</span>
           </div>
         )}
       </form>
