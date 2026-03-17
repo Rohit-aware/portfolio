@@ -10,7 +10,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_3-38BDF8?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
 
-[Live Demo](https://rohitaware.dev) · [LinkedIn](https://www.linkedin.com/in/rohitaware) · [Email](mailto:awarerohit01@gmail.com)
+[Live Demo]([https://rohitaware.dev](https://portfolio-murex-delta-ccxlumojfv.vercel.app/)) · [LinkedIn](https://www.linkedin.com/in/rohitaware) · [Email](mailto:awarerohit01@gmail.com)
 
 </div>
 
