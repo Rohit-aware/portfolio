@@ -27,14 +27,14 @@ export const FLAGS = {
 
   /* ── SKILLS VIEW — priority: TERMINAL > RADIAL > LEGACY ── */
   /** true → VS Code TypeScript editor */
-  SKILLS_TERMINAL: true,
+  SKILLS_TERMINAL: false,
   /** true → Skill Constellation orbit (only checked when TERMINAL=false) */
-  SKILLS_RADIAL: true,
+  SKILLS_RADIAL: false,
 
   /* ── GLOBAL UI ── */
   /** true → Floating portfolio chatbot FAB */
   PORTFOLIO_CHAT: true,
-  PORTFOLIO_ANYALYTICS: true,
+  PORTFOLIO_ANYALYTICS: false,
   /** true → Animated cursor spotlight */
   ANIMATED_CURSOR: true,
 

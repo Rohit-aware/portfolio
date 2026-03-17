@@ -10,7 +10,7 @@ import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
 import { usePortfolioChat } from '@/shared/hooks/usePortfolioChat'
 import { QUICK_CHIPS } from '@/services/portfolioChatEngine'
 import { cn } from '@/shared/utils/cn'
-import type { BotMessage } from '@/services/portfolioChatEngine'
+import type { BotMessage, QuickChip } from '@/services/portfolioChatEngine'
 
 /**
  * PortfolioChat — floating bottom-right chatbot panel.
@@ -93,9 +93,9 @@ const PortfolioChat: React.FC = memo(() => {
     setInputVal, sendMessage, toggleOpen,
   } = usePortfolioChat()
 
-  const bottomRef   = useRef<HTMLDivElement>(null)
-  const inputRef    = useRef<HTMLTextAreaElement>(null)
-  const panelRef    = useRef<HTMLDivElement>(null)
+  const bottomRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   /* Auto-scroll to latest message */
   useEffect(() => {
@@ -125,8 +125,8 @@ const PortfolioChat: React.FC = memo(() => {
     setInputVal(e.target.value)
   }, [setInputVal])
 
-  const handleChip = useCallback((query: string): void => {
-    sendMessage(query)
+  const handleChip = useCallback((chip: QuickChip): void => {
+    sendMessage(chip.label, chip.intent)
   }, [sendMessage])
 
   return (
@@ -212,7 +212,7 @@ const PortfolioChat: React.FC = memo(() => {
             {QUICK_CHIPS.map(chip => (
               <button
                 key={chip.label}
-                onClick={() => handleChip(chip.query)}
+                onClick={() => handleChip(chip)}
                 disabled={isTyping}
                 className={cn(
                   'shrink-0 px-2.5 py-1 rounded-xl text-[10px] font-mono whitespace-nowrap',
