@@ -8,7 +8,6 @@
 
 import { SITE_META } from '@/constants/navigation'
 import { SKILLS_DATA } from '@/features/skills/constants/skills'
-import { PROJECTS_DATA } from '@/features/projects/constants/projects'
 import { EXPERIENCE_DATA } from '@/features/experience/constants/experience'
 
 export type BotIntent =
@@ -16,32 +15,33 @@ export type BotIntent =
   | 'contact' | 'hire' | 'migration' | 'location' | 'fallback'
 
 export interface BotMessage {
-  readonly id:        string
-  readonly role:      'user' | 'bot'
-  readonly text:      string
-  readonly intent?:   BotIntent
+  readonly id: string
+  readonly role: 'user' | 'bot'
+  readonly text: string
+  readonly intent?: BotIntent
   readonly timestamp: number
 }
 
 export interface QuickChip {
   readonly label: string
-  readonly query: string
+  readonly intent: BotIntent
+  readonly query?: string // optional for UI display
 }
 
 /* ── Quick-access chips shown at start and on fallback ── */
 export const QUICK_CHIPS: readonly QuickChip[] = [
-  { label: '👋 Who are you?',        query: 'Who are you?' },
-  { label: '⚡ Skills & stack',       query: 'What are your skills?' },
-  { label: '📱 Apps you built',       query: 'Show me your projects' },
-  { label: '💼 Experience',           query: 'Tell me about your experience' },
-  { label: '🚀 RN migrations',        query: 'What React Native migrations have you done?' },
-  { label: '📍 Location',             query: 'Where are you based?' },
-  { label: '✉️  Hire you',            query: 'Are you available to hire?' },
+  { label: '👋 Who are you?', intent: 'intro' },
+  { label: '⚡ Skills & stack', intent: 'skills' },
+  { label: '📱 Apps you built', intent: 'projects' },
+  { label: '💼 Experience', intent: 'experience' },
+  { label: '🚀 RN migrations', intent: 'migration' },
+  { label: '📍 Location', intent: 'location' },
+  { label: '✉️ Hire you', intent: 'hire' },
 ] as const
 
 /* ── Intent patterns ── */
 interface IntentRule {
-  readonly intent:   BotIntent
+  readonly intent: BotIntent
   readonly patterns: readonly RegExp[]
 }
 
@@ -81,12 +81,27 @@ const RULES: readonly IntentRule[] = [
 ] as const
 
 export const classifyIntent = (input: string): BotIntent => {
-  const trimmed = input.trim()
-  if (!trimmed) return 'fallback'
-  for (const rule of RULES) {
-    if (rule.patterns.some(p => p.test(trimmed))) return rule.intent
+  const text = input.trim().toLowerCase()
+  if (!text) return 'fallback'
+
+  let bestMatch: { intent: BotIntent; score: number } = {
+    intent: 'fallback',
+    score: 0,
   }
-  return 'fallback'
+
+  for (const rule of RULES) {
+    let score = 0
+
+    for (const pattern of rule.patterns) {
+      if (pattern.test(text)) score++
+    }
+
+    if (score > bestMatch.score) {
+      bestMatch = { intent: rule.intent, score }
+    }
+  }
+
+  return bestMatch.score > 0 ? bestMatch.intent : 'fallback'
 }
 
 /* ── Response templates ── */
@@ -96,16 +111,13 @@ const expertSkills = SKILLS_DATA
   .slice(0, 6)
   .join(', ')
 
-const projectTitles = PROJECTS_DATA
-  .map(p => p.title.split('—')[0]?.trim() ?? p.title)
-  .join(', ')
 
 const exp = EXPERIENCE_DATA[0]!
 
 export const generateResponse = (intent: BotIntent): string => {
   switch (intent) {
     case 'intro':
-      return `Hi! I'm ${SITE_META.name} — a ${SITE_META.role} at ${exp.company} with ${exp.duration} of experience.\n\nI build production-grade iOS & Android apps using React Native. I've shipped 5 apps across banking, e-commerce, fitness, fantasy sports, and loan management.\n\nWhat would you like to know?`
+      return `Hi! I'm ${SITE_META.name} — a ${SITE_META.role} at ${exp.company} with ${exp.duration} of experience.\n\nI build production-grade iOS & Android apps using React Native. I've shipped 5 apps across banking, e-commerce,  fantasy sports, and loan management.\n\nWhat would you like to know?`
 
     case 'skills':
       return `My core stack:\n\n★ Expert: ${expertSkills}\n\n◆ Proficient: iOS Dev, Android Dev, New Architecture (Fabric/Turbo), Angular, Zustand, WordPress\n\n○ Familiar: GraphQL, Adobe XD, CodeIgniter\n\nI specialize in React Native architecture — from app scaffolding to Play Store / App Store release.`
@@ -140,7 +152,7 @@ export const makeMsg = (
   text: string,
   intent?: BotIntent,
 ): BotMessage => ({
-  id:        `msg-${++_msgId}-${Date.now()}`,
+  id: `msg-${++_msgId}-${Date.now()}`,
   role,
   text,
   intent,
@@ -150,15 +162,15 @@ export const makeMsg = (
 /** Simulated typing delay — longer for more complex responses */
 export const typingDelay = (intent: BotIntent): number => {
   const delays: Record<BotIntent, number> = {
-    intro:      900,
-    skills:     1100,
-    projects:   1200,
+    intro: 900,
+    skills: 1100,
+    projects: 1200,
     experience: 1000,
-    hire:       800,
-    contact:    600,
-    migration:  1100,
-    location:   500,
-    fallback:   500,
+    hire: 800,
+    contact: 600,
+    migration: 1100,
+    location: 500,
+    fallback: 500,
   }
   return delays[intent]
 }

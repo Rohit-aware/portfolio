@@ -18,7 +18,7 @@ export const ABOUT_PARAGRAPHS = [
     Currently working at{' '}
     <span className="text-foreground font-medium" > Mypcot Infotech </span>, I've built and
     shipped production apps across multiple domains including fantasy sports,
-    fitness, e - commerce, banking, and B2B client management.
+    e - commerce, banking, and B2B client management.
   </React.Fragment>,
 
   <React.Fragment key="p3">

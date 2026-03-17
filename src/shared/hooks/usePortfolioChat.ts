@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
 import {
+  BotIntent,
   classifyIntent,
   generateResponse,
   makeMsg,
@@ -8,22 +9,22 @@ import {
 } from '@/services/portfolioChatEngine'
 
 interface ChatState {
-  readonly messages:  readonly BotMessage[]
-  readonly isTyping:  boolean
-  readonly inputVal:  string
-  readonly isOpen:    boolean
+  readonly messages: readonly BotMessage[]
+  readonly isTyping: boolean
+  readonly inputVal: string
+  readonly isOpen: boolean
 }
 
 interface UsePortfolioChatReturn {
-  readonly messages:    readonly BotMessage[]
-  readonly isTyping:    boolean
-  readonly inputVal:    string
-  readonly isOpen:      boolean
-  readonly unread:      number
+  readonly messages: readonly BotMessage[]
+  readonly isTyping: boolean
+  readonly inputVal: string
+  readonly isOpen: boolean
+  readonly unread: number
   readonly setInputVal: (v: string) => void
-  readonly sendMessage: (text: string) => void
-  readonly toggleOpen:  () => void
-  readonly openChat:    () => void
+  readonly sendMessage: (text: string, explicitIntent?: BotIntent) => void
+  readonly toggleOpen: () => void
+  readonly openChat: () => void
 }
 
 const WELCOME = makeMsg(
@@ -38,23 +39,28 @@ const WELCOME = makeMsg(
  * No leaked timers — clears on unmount.
  */
 export const usePortfolioChat = (): UsePortfolioChatReturn => {
-  const [state,   setState]   = useState<ChatState>({
+  const [state, setState] = useState<ChatState>({
     messages: [WELCOME],
     isTyping: false,
     inputVal: '',
-    isOpen:   false,
+    isOpen: false,
   })
-  const [unread, setUnread]   = useState(0)
+  const [unread, setUnread] = useState(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const sendMessage = useCallback((text: string): void => {
+  const sendMessage = useCallback((
+    text: string,
+    explicitIntent?: BotIntent
+  ): void => {
     const trimmed = text.trim()
     if (!trimmed) return
+
     if (timerRef.current) clearTimeout(timerRef.current)
 
-    const userMsg = makeMsg('user', trimmed)
-    const intent  = classifyIntent(trimmed)
-    const delay   = typingDelay(intent)
+    const intent = explicitIntent ?? classifyIntent(trimmed)
+    const delay = typingDelay(intent)
+
+    const userMsg = makeMsg('user', trimmed, intent)
 
     setState(prev => ({
       ...prev,
@@ -65,15 +71,19 @@ export const usePortfolioChat = (): UsePortfolioChatReturn => {
 
     timerRef.current = setTimeout(() => {
       const botMsg = makeMsg('bot', generateResponse(intent), intent)
-      setState(prev => ({
-        ...prev,
-        messages: [...prev.messages, botMsg],
-        isTyping: false,
-      }))
-      // Increment unread badge if chat is closed
+
       setState(prev => {
-        if (!prev.isOpen) setUnread(u => u + 1)
-        return prev
+        const nextMessages = [...prev.messages, botMsg]
+
+        if (!prev.isOpen) {
+          setUnread(u => u + 1)
+        }
+
+        return {
+          ...prev,
+          messages: nextMessages,
+          isTyping: false,
+        }
       })
     }, delay)
   }, [])
@@ -93,10 +103,10 @@ export const usePortfolioChat = (): UsePortfolioChatReturn => {
   }, [])
 
   return {
-    messages:    state.messages,
-    isTyping:    state.isTyping,
-    inputVal:    state.inputVal,
-    isOpen:      state.isOpen,
+    messages: state.messages,
+    isTyping: state.isTyping,
+    inputVal: state.inputVal,
+    isOpen: state.isOpen,
     unread,
     setInputVal,
     sendMessage,

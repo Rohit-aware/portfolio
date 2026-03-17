@@ -3,8 +3,8 @@ import { BOOT_SEQUENCE } from '@/features/hero/constants/bootSequence'
 
 export interface UseBootSequenceReturn {
   readonly revealedCount: number
-  readonly allDone:       boolean
-  readonly showCommands:  boolean
+  readonly allDone: boolean
+  readonly showCommands: boolean
 }
 
 /**
@@ -32,7 +32,7 @@ export const useBootSequence = (): UseBootSequenceReturn => {
 
   return {
     revealedCount,
-    allDone:      revealedCount >= BOOT_SEQUENCE.length,
+    allDone: revealedCount >= BOOT_SEQUENCE.length,
     showCommands: revealedCount >= BOOT_SEQUENCE.length - 1,
   }
 }

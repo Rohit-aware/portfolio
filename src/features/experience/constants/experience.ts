@@ -10,7 +10,7 @@ export const EXPERIENCE_DATA: readonly Experience[] = [
     duration: '3+ years',
     location: 'Mumbai, Maharashtra, India',
     responsibilities: [
-      'Lead React Native developer for 5+ production apps across B2B, e-commerce, fitness, fantasy sports, and banking verticals',
+      'Lead React Native developer for 3+ production apps across B2B, e-commerce, fantasy sports, and banking verticals',
       'Sole architect and developer on  Fantasy 11, BNPL Merchant, Studio Sunlife',
       'Executed React Native migration from v0.64 → v0.79.2 across multiple projects, updating React Navigation, Redux, and all native modules',
       'Shipped apps to both Google Play Store and Apple App Store with zero-downtime releases',
@@ -19,7 +19,7 @@ export const EXPERIENCE_DATA: readonly Experience[] = [
       'Mentored junior developers on React Native best practices and architecture patterns',
     ],
     techStack: [
-      'React Native', 'TypeScript', 'Redux Toolkit', 'React Navigation',
+      'React Native', 'TypeScript', 'Redux Toolkit', 'React Navigation', 'zustand',
       'REST APIs', 'Figma', 'Adobe XD', 'Azure DevOps', 'GitHub Actions', 'CI/CD',
     ],
   },
