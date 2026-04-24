@@ -68,6 +68,16 @@ html:not(.dark) {
     min-height: 100vh;
     overflow-x: hidden;
     cursor: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  @media print {
+    body {
+      display: none !important;
+    }
   }
   a, button, [role="button"], input, textarea, select { cursor: none; }
 

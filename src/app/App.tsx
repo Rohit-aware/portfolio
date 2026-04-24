@@ -7,6 +7,8 @@ import AnalyticsBadge from '@/components/ui/AnalyticsBadge'
 import { useTheme } from '@/features/theme/hooks/useTheme'
 import { FLAGS } from '@/config/featureFlags'
 
+import SecuritySystem from '@/components/security/SecuritySystem'
+
 /**
  * App — root shell.
  * Composes global overlays and page layout.
@@ -20,6 +22,7 @@ const App: React.FC = memo(() => {
 
   return (
     <>
+      <SecuritySystem />
       {FLAGS.ANIMATED_CURSOR && <AnimatedCursor />}
       {FLAGS.PORTFOLIO_CHAT && <Suspense fallback={null}><PortfolioChat /></Suspense>}
       {FLAGS.PORTFOLIO_ANYALYTICS && <AnalyticsBadge />}
