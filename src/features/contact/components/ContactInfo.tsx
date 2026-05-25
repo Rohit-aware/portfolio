@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { MapPin } from 'lucide-react'
-import { SITE_META }     from '@/constants/navigation'
+import { SITE_META } from '@/constants/navigation'
 import { CONNECT_LINKS } from '@/features/contact/constants/connectLinks'
 
 const ContactInfo: React.FC = memo(() => (
@@ -30,7 +30,9 @@ const ContactInfo: React.FC = memo(() => (
       <div>
         <p className="text-xs font-mono text-muted-foreground mb-0.5">Location</p>
         <p className="text-sm font-semibold text-foreground">{SITE_META.location}</p>
-        <p className="text-xs text-muted-foreground mt-0.5">Working in {SITE_META.workLocation}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">
+          Working in {SITE_META.workLocation}
+        </p>
       </div>
     </div>
   </div>

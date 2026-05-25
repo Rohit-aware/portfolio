@@ -3,16 +3,9 @@ import { Eye } from 'lucide-react'
 import { cn } from '@/shared/utils/cn'
 import { useAnalyticsStore } from '@/features/analytics/store/analyticsStore'
 
-/**
- * AnalyticsBadge — floating visitor counter in bottom-left corner.
- * Subtle by default, glows briefly when a new visit is registered.
- * Uses useAnalytics hook — no props needed.
- */
-
 const AnalyticsBadge: React.FC = memo(() => {
   const { visitCount, isNewVisit, isLoading, recordVisit } = useAnalyticsStore()
 
-  // Fire analytics API call on mount
   React.useEffect(() => {
     recordVisit()
   }, [recordVisit])
@@ -39,20 +32,16 @@ const AnalyticsBadge: React.FC = memo(() => {
           isNewVisit ? 'text-primary' : 'text-muted-foreground/60',
         )}
       />
-      {isLoading
-        ? <span className="opacity-40">···</span>
-        : (
-          <span>
-            {visitCount.toLocaleString()}
-            <span className="opacity-50 ml-1">visits</span>
-          </span>
-        )
-      }
+      {isLoading ? (
+        <span className="opacity-40">···</span>
+      ) : (
+        <span>
+          {visitCount.toLocaleString()}
+          <span className="opacity-50 ml-1">visits</span>
+        </span>
+      )}
       {isNewVisit && !isLoading && (
-        <span
-          aria-live="polite"
-          className="ml-0.5 text-primary/70 animate-fade-in"
-        >
+        <span aria-live="polite" className="ml-0.5 text-primary/70 animate-fade-in">
           ✦
         </span>
       )}

@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import RevealWrapper from '@/shared/components/RevealWrapper'
-import AboutText     from '@/features/about/components/AboutText'
-import AboutFacts    from '@/features/about/components/AboutFactsGrid'
+import AboutText from '@/features/about/components/AboutText'
+import AboutFacts from '@/features/about/components/AboutFactsGrid'
 
 const AboutSection: React.FC = memo(() => (
   <section id="about" aria-labelledby="about-heading" className="section-padding">

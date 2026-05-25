@@ -29,14 +29,13 @@ export interface UseThemeReturn {
 export const useTheme = (): UseThemeReturn => {
   const theme = useThemeStore((s) => s.theme)
   const setThemeState = useThemeStore((s) => s.setThemeState)
-  
+
   const isDark = resolveIsDark(theme)
 
   useEffect(() => {
     applyTheme(isDark)
   }, [isDark])
 
-  // Track system preference changes when theme === 'system'
   useEffect(() => {
     if (theme !== 'system') return
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
@@ -45,10 +44,12 @@ export const useTheme = (): UseThemeReturn => {
     return () => mq.removeEventListener('change', onChange)
   }, [theme])
 
-  const setTheme = useCallback((t: ThemeMode): void => {
-    setThemeState(t)
-    // mmkvStorage takes care of localStorage persistence via Zustand persist
-  }, [setThemeState])
+  const setTheme = useCallback(
+    (t: ThemeMode): void => {
+      setThemeState(t)
+    },
+    [setThemeState],
+  )
 
   const toggleTheme = useCallback((): void => {
     setThemeState(isDark ? 'light' : 'dark')

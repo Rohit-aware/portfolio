@@ -7,10 +7,6 @@ export interface UseBootSequenceReturn {
   readonly showCommands: boolean
 }
 
-/**
- * useBootSequence — drives the line-by-line reveal of the terminal boot sequence.
- * Each line has its own delay so the typing feels natural, not mechanical.
- */
 export const useBootSequence = (): UseBootSequenceReturn => {
   const [revealedCount, setRevealedCount] = useState(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)

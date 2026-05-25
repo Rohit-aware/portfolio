@@ -5,7 +5,7 @@ import { cn } from '@/shared/utils/cn'
 
 interface EditorTabBarProps {
   readonly activeFile: EditorFile
-  readonly onSelect:   (f: EditorFile) => void
+  readonly onSelect: (f: EditorFile) => void
 }
 
 const EditorTabBar: React.FC<EditorTabBarProps> = memo(({ activeFile, onSelect }) => (
@@ -14,7 +14,7 @@ const EditorTabBar: React.FC<EditorTabBarProps> = memo(({ activeFile, onSelect }
     role="tablist"
     aria-label="Skill category files"
   >
-    {EDITOR_FILES.map(f => (
+    {EDITOR_FILES.map((f) => (
       <button
         key={f.name}
         role="tab"

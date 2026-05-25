@@ -4,9 +4,9 @@ const TerminalTitleBar: React.FC = memo(() => (
   <div
     className="flex items-center gap-2 px-4 py-2.5 rounded-t-xl"
     style={{
-      background:  '#0f1117',
-      borderTop:   '1px solid rgba(0,255,100,0.12)',
-      borderLeft:  '1px solid rgba(0,255,100,0.12)',
+      background: '#0f1117',
+      borderTop: '1px solid rgba(0,255,100,0.12)',
+      borderLeft: '1px solid rgba(0,255,100,0.12)',
       borderRight: '1px solid rgba(0,255,100,0.12)',
     }}
   >

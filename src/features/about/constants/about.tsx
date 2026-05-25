@@ -10,29 +10,32 @@ export interface AboutFact {
 export const ABOUT_PARAGRAPHS = [
   <React.Fragment key="p1">
     I'm a React Native developer with{' '}
-    <span className="text-foreground font-medium" > 3 + years of professional experience </span>{' '}
+    <span className="text-foreground font-medium">
+      {' '}
+      3 + years of professional experience{' '}
+    </span>{' '}
     building scalable mobile applications for Android and iOS.
   </React.Fragment>,
 
   <React.Fragment key="p2">
     Currently working at{' '}
-    <span className="text-foreground font-medium" > Mypcot Infotech </span>, I've built and
-    shipped production apps across multiple domains including fantasy sports,
-    e - commerce, banking, and B2B client management.
+    <span className="text-foreground font-medium"> Mypcot Infotech </span>, I've built and
+    shipped production apps across multiple domains including fantasy sports, e -
+    commerce, banking, and B2B client management.
   </React.Fragment>,
 
   <React.Fragment key="p3">
-    I specialize in {' '}
-    <span className="text-foreground font-medium" > React Native architecture </span>,{' '}
-    <span className="text-foreground font-medium" > Redux Toolkit </span>, and complex API
+    I specialize in{' '}
+    <span className="text-foreground font-medium"> React Native architecture </span>,{' '}
+    <span className="text-foreground font-medium"> Redux Toolkit </span>, and complex API
     integrations.I've also executed several{' '}
-    <span className="text-foreground font-medium" > React Native migrations </span> while
+    <span className="text-foreground font-medium"> React Native migrations </span> while
     keeping production apps stable.
   </React.Fragment>,
 
   <React.Fragment key="p4">
-    I focus on clean architecture, maintainable code, and building performant
-    mobile experiences that users actually enjoy.
+    I focus on clean architecture, maintainable code, and building performant mobile
+    experiences that users actually enjoy.
   </React.Fragment>,
 ] as const
 

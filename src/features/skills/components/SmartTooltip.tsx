@@ -55,7 +55,8 @@ const SmartTooltip: React.FC<SmartTooltipProps> = memo(({ ft }) => {
   return (
     <g style={{ pointerEvents: 'none' }}>
       <line
-        x1={svgX} y1={svgY}
+        x1={svgX}
+        y1={svgY}
         x2={inRightHalf ? tx + TT_W : tx}
         y2={ty + TT_H / 2}
         stroke={style.glowColor}
@@ -63,24 +64,55 @@ const SmartTooltip: React.FC<SmartTooltipProps> = memo(({ ft }) => {
         strokeDasharray="3 3"
         opacity="0.5"
       />
-      <rect x={tx} y={ty} width={TT_W} height={TT_H} rx="8"
+      <rect
+        x={tx}
+        y={ty}
+        width={TT_W}
+        height={TT_H}
+        rx="8"
         fill="hsl(var(--card) / 0.97)"
         stroke={style.nodeStroke}
         strokeWidth="1"
       />
-      <rect x={tx + 1} y={ty + 8} width="3" height={TT_H - 16} rx="2"
-        fill={style.nodeFill} opacity="0.9"
+      <rect
+        x={tx + 1}
+        y={ty + 8}
+        width="3"
+        height={TT_H - 16}
+        rx="2"
+        fill={style.nodeFill}
+        opacity="0.9"
       />
-      <text x={tx + 13} y={ty + 20}
-        fill="hsl(var(--foreground))" fontSize="11" fontWeight="700" fontFamily="monospace">
+      <text
+        x={tx + 13}
+        y={ty + 20}
+        fill="hsl(var(--foreground))"
+        fontSize="11"
+        fontWeight="700"
+        fontFamily="monospace"
+      >
         {node.name}
       </text>
-      <text x={tx + 13} y={ty + 35}
-        fill={style.textFill} fontSize="9" fontWeight="600" fontFamily="monospace" opacity="0.85">
+      <text
+        x={tx + 13}
+        y={ty + 35}
+        fill={style.textFill}
+        fontSize="9"
+        fontWeight="600"
+        fontFamily="monospace"
+        opacity="0.85"
+      >
         {style.label}
       </text>
-      <text x={tx + TT_W - 8} y={ty + 35}
-        fill="hsl(var(--muted-foreground))" fontSize="9" fontFamily="monospace" textAnchor="end" opacity="0.6">
+      <text
+        x={tx + TT_W - 8}
+        y={ty + 35}
+        fill="hsl(var(--muted-foreground))"
+        fontSize="9"
+        fontFamily="monospace"
+        textAnchor="end"
+        opacity="0.6"
+      >
         {node.category}
       </text>
     </g>

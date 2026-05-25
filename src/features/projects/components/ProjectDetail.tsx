@@ -29,33 +29,47 @@ const ProjectDetail: React.FC<ProjectDetailProps> = memo(({ project }) => (
     </div>
 
     <h3 className="heading-md text-foreground mb-2">{project.title}</h3>
-    <p className="text-sm text-muted-foreground leading-relaxed mb-4">{project.description}</p>
+    <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+      {project.description}
+    </p>
 
     {project.hasMigration && project.migrationDetails && (
       <div className="mb-4 p-3 rounded-xl bg-amber-500/6 border border-amber-500/15">
-        <p className="text-xs font-mono text-amber-400/85 leading-relaxed">⚡ {project.migrationDetails}</p>
+        <p className="text-xs font-mono text-amber-400/85 leading-relaxed">
+          ⚡ {project.migrationDetails}
+        </p>
       </div>
     )}
 
     <div className="mb-4">
       <div className="flex items-center gap-2 mb-2.5">
         <Layers size={12} className="text-primary" aria-hidden="true" />
-        <span className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-widest">Tech Stack</span>
+        <span className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-widest">
+          Tech Stack
+        </span>
       </div>
       <div className="flex flex-wrap gap-1.5">
-        {project.techStack.map(tech => <span key={tech} className="tag">{tech}</span>)}
+        {project.techStack.map((tech) => (
+          <span key={tech} className="tag">
+            {tech}
+          </span>
+        ))}
       </div>
     </div>
 
     <div className="mb-5">
       <div className="flex items-center gap-2 mb-2.5">
         <ArrowRight size={12} className="text-primary" aria-hidden="true" />
-        <span className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-widest">Responsibilities</span>
+        <span className="text-xs font-mono font-semibold text-muted-foreground uppercase tracking-widest">
+          Responsibilities
+        </span>
       </div>
       <ul className="space-y-1.5">
         {project.responsibilities.map((r, i) => (
           <li key={i} className="flex gap-2 text-xs text-muted-foreground">
-            <span className="text-primary/60 shrink-0 mt-0.5" aria-hidden="true">›</span>
+            <span className="text-primary/60 shrink-0 mt-0.5" aria-hidden="true">
+              ›
+            </span>
             <span className="leading-relaxed">{r}</span>
           </li>
         ))}
@@ -64,20 +78,36 @@ const ProjectDetail: React.FC<ProjectDetailProps> = memo(({ project }) => (
 
     <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border">
       {project.androidUrl && (
-        <a href={project.androidUrl} target="_blank" rel="noopener noreferrer"
-          className="text-xs text-muted-foreground hover:text-primary transition-colors">Android ↗</a>
+        <a
+          href={project.androidUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-muted-foreground hover:text-primary transition-colors"
+        >
+          Android ↗
+        </a>
       )}
       {project.iosUrl && (
-        <a href={project.iosUrl} target="_blank" rel="noopener noreferrer"
-          className="text-xs text-muted-foreground hover:text-primary transition-colors">iOS ↗</a>
+        <a
+          href={project.iosUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-muted-foreground hover:text-primary transition-colors"
+        >
+          iOS ↗
+        </a>
       )}
       {!project.githubUrl && (
         <span className="flex items-center gap-1 text-xs text-muted-foreground/35">
           <Github size={11} aria-hidden="true" /> Private repo
         </span>
       )}
-      <a href={project.portfolioUrl} target="_blank" rel="noopener noreferrer"
-        className="ml-auto flex items-center gap-1.5 text-xs font-medium text-primary hover:underline">
+      <a
+        href={project.portfolioUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="ml-auto flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+      >
         Case Study <ExternalLink size={11} aria-hidden="true" />
       </a>
     </div>

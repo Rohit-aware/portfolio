@@ -1,18 +1,17 @@
-/**
- * portfolioChatEngine — rule-based intent classifier + response generator.
- * Pure module — no side-effects, zero external deps, fully testable.
- *
- * Uses Rohit's real data to produce rich, accurate responses.
- * Pattern: classify intent → pick response template → render.
- */
-
 import { SITE_META } from '@/constants/navigation'
 import { SKILLS_DATA } from '@/features/skills/constants/skills'
 import { EXPERIENCE_DATA } from '@/features/experience/constants/experience'
 
 export type BotIntent =
-  | 'intro' | 'skills' | 'projects' | 'experience'
-  | 'contact' | 'hire' | 'migration' | 'location' | 'fallback'
+  | 'intro'
+  | 'skills'
+  | 'projects'
+  | 'experience'
+  | 'contact'
+  | 'hire'
+  | 'migration'
+  | 'location'
+  | 'fallback'
 
 export interface BotMessage {
   readonly id: string
@@ -25,10 +24,9 @@ export interface BotMessage {
 export interface QuickChip {
   readonly label: string
   readonly intent: BotIntent
-  readonly query?: string // optional for UI display
+  readonly query?: string
 }
 
-/* ── Quick-access chips shown at start and on fallback ── */
 export const QUICK_CHIPS: readonly QuickChip[] = [
   { label: '👋 Who are you?', intent: 'intro' },
   { label: '⚡ Skills & stack', intent: 'skills' },
@@ -39,7 +37,6 @@ export const QUICK_CHIPS: readonly QuickChip[] = [
   { label: '✉️ Hire you', intent: 'hire' },
 ] as const
 
-/* ── Intent patterns ── */
 interface IntentRule {
   readonly intent: BotIntent
   readonly patterns: readonly RegExp[]
@@ -48,11 +45,16 @@ interface IntentRule {
 const RULES: readonly IntentRule[] = [
   {
     intent: 'intro',
-    patterns: [/\b(who|about|yourself|introduce|hello|hi|hey|yo|namaste)\b/i, /^(hi|hello|hey)[\s!?]*$/i],
+    patterns: [
+      /\b(who|about|yourself|introduce|hello|hi|hey|yo|namaste)\b/i,
+      /^(hi|hello|hey)[\s!?]*$/i,
+    ],
   },
   {
     intent: 'skills',
-    patterns: [/\b(skill|tech|stack|know|language|framework|expertise|react|native|typescript|redux|tailwind)\b/i],
+    patterns: [
+      /\b(skill|tech|stack|know|language|framework|expertise|react|native|typescript|redux|tailwind)\b/i,
+    ],
   },
   {
     intent: 'migration',
@@ -60,7 +62,9 @@ const RULES: readonly IntentRule[] = [
   },
   {
     intent: 'projects',
-    patterns: [/\b(project|app|built|work|portfolio|clms|maak|trolley|fantasy|sunlife)\b/i],
+    patterns: [
+      /\b(project|app|built|work|portfolio|clms|maak|trolley|fantasy|sunlife)\b/i,
+    ],
   },
   {
     intent: 'experience',
@@ -68,7 +72,9 @@ const RULES: readonly IntentRule[] = [
   },
   {
     intent: 'hire',
-    patterns: [/\b(hire|available|opportunity|role|position|join|work with|recruit|open)\b/i],
+    patterns: [
+      /\b(hire|available|opportunity|role|position|join|work with|recruit|open)\b/i,
+    ],
   },
   {
     intent: 'contact',
@@ -104,13 +110,12 @@ export const classifyIntent = (input: string): BotIntent => {
   return bestMatch.score > 0 ? bestMatch.intent : 'fallback'
 }
 
-/* ── Response templates ── */
-const expertSkills = SKILLS_DATA
-  .flatMap(g => g.skills.filter(s => s.tier === 'expert'))
-  .map(s => s.name)
+const expertSkills = SKILLS_DATA.flatMap((g) =>
+  g.skills.filter((s) => s.tier === 'expert'),
+)
+  .map((s) => s.name)
   .slice(0, 6)
   .join(', ')
-
 
 const exp = EXPERIENCE_DATA[0]!
 
@@ -159,7 +164,6 @@ export const makeMsg = (
   timestamp: Date.now(),
 })
 
-/** Simulated typing delay — longer for more complex responses */
 export const typingDelay = (intent: BotIntent): number => {
   const delays: Record<BotIntent, number> = {
     intro: 900,

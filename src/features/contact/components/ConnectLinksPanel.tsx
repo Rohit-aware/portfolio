@@ -30,7 +30,9 @@ const ConnectLinksPanel: React.FC = memo(() => (
       <div>
         <p className="text-xs font-mono text-muted-foreground mb-0.5">Location</p>
         <p className="text-sm font-semibold text-foreground">{SITE_META.location}</p>
-        <p className="text-xs text-muted-foreground mt-0.5">Working in {SITE_META.workLocation}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">
+          Working in {SITE_META.workLocation}
+        </p>
       </div>
     </div>
   </div>

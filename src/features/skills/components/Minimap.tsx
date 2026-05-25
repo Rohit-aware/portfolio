@@ -8,7 +8,7 @@ interface MinimapProps {
 }
 
 const Minimap: React.FC<MinimapProps> = memo(({ category }) => {
-  const group = SKILLS_DATA.find(g => g.category === category)
+  const group = SKILLS_DATA.find((g) => g.category === category)
   if (!group) return null
 
   return (
@@ -19,9 +19,9 @@ const Minimap: React.FC<MinimapProps> = memo(({ category }) => {
             key={s.id}
             className="h-1.5 rounded-full"
             style={{
-              width:      `${50 + (i % 3) * 20}%`,
+              width: `${50 + (i % 3) * 20}%`,
               background: TIER_TOKENS[s.tier].comment,
-              opacity:    s.tier === 'expert' ? 1 : s.tier === 'proficient' ? 0.7 : 0.4,
+              opacity: s.tier === 'expert' ? 1 : s.tier === 'proficient' ? 0.7 : 0.4,
             }}
           />
         ))}

@@ -1,9 +1,9 @@
 import React, { memo } from 'react'
 
 interface EditorStatusBarProps {
-  readonly currentLine:  number
-  readonly totalLines:   number
-  readonly skillCount:   number
+  readonly currentLine: number
+  readonly totalLines: number
+  readonly skillCount: number
 }
 
 const EditorStatusBar: React.FC<EditorStatusBarProps> = memo(
@@ -20,7 +20,7 @@ const EditorStatusBar: React.FC<EditorStatusBarProps> = memo(
         <span className="text-[10px] font-mono text-[#4a4a5a]">{skillCount} exports</span>
       </div>
     </div>
-  )
+  ),
 )
 
 EditorStatusBar.displayName = 'EditorStatusBar'

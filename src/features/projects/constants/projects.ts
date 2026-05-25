@@ -1,8 +1,8 @@
 import type { Project } from '@/types'
-import ClmsImage from './projectImages/clms-all.webp';
-import TrolleyImage from './projectImages/trolly-all.webp';
-import MaakImage from './projectImages/maak-all.webp';
-import FantasyImage from './projectImages/fantasy-all.webp';
+import ClmsImage from './projectImages/clms-all.webp'
+import TrolleyImage from './projectImages/trolly-all.webp'
+import MaakImage from './projectImages/maak-all.webp'
+import FantasyImage from './projectImages/fantasy-all.webp'
 
 export const PROJECTS_DATA: readonly Project[] = [
   {
@@ -29,7 +29,7 @@ export const PROJECTS_DATA: readonly Project[] = [
       'Designed dashboard analytics for tracking leads, projects, and team activities',
       'Integrated document uploads and activity logs for requirement discussions',
       'Optimized large data rendering and improved application performance',
-      'Handled React Native version migration and dependency upgrades'
+      'Handled React Native version migration and dependency upgrades',
     ],
 
     hasMigration: true,
@@ -37,7 +37,7 @@ export const PROJECTS_DATA: readonly Project[] = [
       'Migrated React Native from v0.64 → v0.79.2, upgrading React Navigation, Redux Toolkit, and native dependencies.',
 
     portfolioUrl: 'https://www.mypcot.com/portfolio/clms',
-    projectImageUrl: ClmsImage
+    projectImageUrl: ClmsImage,
   },
 
   {
@@ -65,13 +65,13 @@ export const PROJECTS_DATA: readonly Project[] = [
       'Implemented real-time score updates and leaderboard refresh using WebSockets',
       'Built contest participation flow including team submission and ranking updates',
       'Integrated wallet and transaction systems for contest entry and winnings',
-      'Optimized UI performance during live match traffic spikes'
+      'Optimized UI performance during live match traffic spikes',
     ],
 
     hasMigration: false,
 
     portfolioUrl: 'https://www.mypcot.com/portfolio/fantasy-eleven',
-    projectImageUrl: FantasyImage
+    projectImageUrl: FantasyImage,
   },
 
   {
@@ -97,14 +97,14 @@ export const PROJECTS_DATA: readonly Project[] = [
       'Implemented secure checkout and payment processing workflows',
       'Built order history and order tracking interfaces',
       'Added wishlist, reviews, and ratings functionality',
-      'Performed React Native version migration and resolved dependency compatibility issues'
+      'Performed React Native version migration and resolved dependency compatibility issues',
     ],
 
     hasMigration: true,
     migrationDetails:
       'Migrated React Native from v0.64 → v0.79.2 and updated dependencies and navigation libraries to support the latest architecture.',
     portfolioUrl: 'https://www.mypcot.com/portfolio/trolley',
-    projectImageUrl: TrolleyImage
+    projectImageUrl: TrolleyImage,
   },
 
   {
@@ -116,13 +116,7 @@ export const PROJECTS_DATA: readonly Project[] = [
 
     category: 'Banking & Finance',
 
-    techStack: [
-      'React Native',
-      'REST APIs',
-      'Figma',
-      'CI for Apis',
-      'Azure DevOps'
-    ],
+    techStack: ['React Native', 'REST APIs', 'Figma', 'CI for Apis', 'Azure DevOps'],
 
     responsibilities: [
       'Developed and stabilized the React Native mobile application for Android and iOS',
@@ -131,7 +125,7 @@ export const PROJECTS_DATA: readonly Project[] = [
       'Built service provider portals for managing platform services',
       'Resolved performance issues with third-party banking integrations',
       'Handled React Native framework upgrade and dependency migrations',
-      'Participated in security audit and VAPT compliance preparation'
+      'Participated in security audit and VAPT compliance preparation',
     ],
 
     hasMigration: true,
@@ -140,7 +134,7 @@ export const PROJECTS_DATA: readonly Project[] = [
       'Migrated React Native from v0.64 → v0.79.2 and updated all major dependencies to support the new architecture.',
 
     portfolioUrl: 'https://www.mypcot.com/portfolio/maak',
-    projectImageUrl: MaakImage
+    projectImageUrl: MaakImage,
   },
   {
     id: 'bnpl',
@@ -159,7 +153,7 @@ export const PROJECTS_DATA: readonly Project[] = [
       'QR Code Payments',
       'Figma',
       'Azure DevOps',
-      'Payment Gateway Integration'
+      'Payment Gateway Integration',
     ],
 
     responsibilities: [
@@ -170,7 +164,7 @@ export const PROJECTS_DATA: readonly Project[] = [
       'Implemented push notifications for bookings, payments, and installment reminders',
       'Integrated Node.js backend APIs for transactions, bookings, and services',
       'Optimized performance and improved UI/UX across both mobile apps',
-      'Handled React Native version upgrades and dependency management'
+      'Handled React Native version upgrades and dependency management',
     ],
 
     hasMigration: false,
@@ -180,6 +174,6 @@ export const PROJECTS_DATA: readonly Project[] = [
       'Upgraded React Native from v0.64 → v0.79 and refactored modules to support BNPL payment flows and QR payment features.',
 
     portfolioUrl: 'https://www.mypcot.com/portfolio/maak',
-    projectImageUrl: './projectImages/bnpl-all.png'
-  }
+    projectImageUrl: './projectImages/bnpl-all.png',
+  },
 ] as const

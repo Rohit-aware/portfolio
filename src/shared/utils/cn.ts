@@ -1,12 +1,3 @@
-/**
- * cn — class name composer
- * Accepts strings, conditionals, objects, and arrays.
- * Eliminates ALL inline .join(' ') and template strings for classNames.
- *
- * Usage:
- *   cn('base', isActive && 'active', { 'extra': condition })
- *   cn('base', ['always', isActive && 'conditional'])
- */
 type ClassValue =
   | string
   | undefined
@@ -21,10 +12,18 @@ export const cn = (...inputs: ClassValue[]): string => {
 
   const process = (val: ClassValue): void => {
     if (!val && val !== 0) return
-    if (typeof val === 'string') { out.push(val); return }
-    if (Array.isArray(val)) { val.forEach(process); return }
+    if (typeof val === 'string') {
+      out.push(val)
+      return
+    }
+    if (Array.isArray(val)) {
+      val.forEach(process)
+      return
+    }
     if (typeof val === 'object') {
-      Object.entries(val).forEach(([k, v]) => { if (v) out.push(k) })
+      Object.entries(val).forEach(([k, v]) => {
+        if (v) out.push(k)
+      })
     }
   }
 
@@ -56,15 +55,11 @@ export const cn = (...inputs: ClassValue[]): string => {
 type VariantMap = Record<string, Record<string, string>>
 type VariantKeys<T extends VariantMap> = { [K in keyof T]?: keyof T[K] }
 
-export const cv = <T extends VariantMap>(
-  base: string,
-  variants: T,
-) => (
-  selected: VariantKeys<T>,
-  extra?: ClassValue,
-): string => {
-  const variantClasses = Object.entries(selected)
-    .map(([key, value]) => variants[key]?.[value as string] ?? '')
-    .filter(Boolean)
-  return cn(base, ...variantClasses, extra)
-}
+export const cv =
+  <T extends VariantMap>(base: string, variants: T) =>
+  (selected: VariantKeys<T>, extra?: ClassValue): string => {
+    const variantClasses = Object.entries(selected)
+      .map(([key, value]) => variants[key]?.[value as string] ?? '')
+      .filter(Boolean)
+    return cn(base, ...variantClasses, extra)
+  }
