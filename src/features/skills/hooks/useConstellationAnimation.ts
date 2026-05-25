@@ -1,12 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { BASE_SPEED, RING_RADII, RING_SPEED, CX, CY } from '../constants/constellationConfig'
+import {
+  BASE_SPEED,
+  RING_RADII,
+  RING_SPEED,
+  CX,
+  CY,
+} from '../constants/constellationConfig'
 import type { SkillNode } from './types'
 
 interface UseConstellationAnimationReturn {
-  readonly getPos:      (node: SkillNode) => { x: number; y: number }
+  readonly getPos: (node: SkillNode) => { x: number; y: number }
   readonly handleEnter: (node: SkillNode, x: number, y: number) => void
   readonly handleLeave: () => void
-  readonly floatTip:    FloatTooltip | null
+  readonly floatTip: FloatTooltip | null
 }
 
 export interface FloatTooltip {
@@ -16,12 +22,12 @@ export interface FloatTooltip {
 }
 
 export const useConstellationAnimation = (): UseConstellationAnimationReturn => {
-  const [floatTip,   setFloatTip]   = useState<FloatTooltip | null>(null)
-  const rotationRef  = useRef<number>(0)
-  const isPausedRef  = useRef<boolean>(false)
-  const rafRef       = useRef<number>(0)
-  const lastTimeRef  = useRef<number>(0)
-  const [, setTick]  = useState(0)
+  const [floatTip, setFloatTip] = useState<FloatTooltip | null>(null)
+  const rotationRef = useRef<number>(0)
+  const isPausedRef = useRef<boolean>(false)
+  const rafRef = useRef<number>(0)
+  const lastTimeRef = useRef<number>(0)
+  const [, setTick] = useState(0)
 
   useEffect(() => {
     const loop = (now: number): void => {
@@ -30,7 +36,7 @@ export const useConstellationAnimation = (): UseConstellationAnimationReturn => 
       lastTimeRef.current = now
       if (!isPausedRef.current) {
         rotationRef.current += dt * BASE_SPEED
-        setTick(t => t + 1)
+        setTick((t) => t + 1)
       }
       rafRef.current = requestAnimationFrame(loop)
     }
@@ -39,7 +45,7 @@ export const useConstellationAnimation = (): UseConstellationAnimationReturn => 
   }, [])
 
   const getPos = useCallback((node: SkillNode) => {
-    const r   = RING_RADII[node.ring] ?? 88
+    const r = RING_RADII[node.ring] ?? 88
     const spd = RING_SPEED[node.ring] ?? 1
     const ang = node.angle + rotationRef.current * spd
     return { x: CX + r * Math.cos(ang), y: CY + r * Math.sin(ang) }

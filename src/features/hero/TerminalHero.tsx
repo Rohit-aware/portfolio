@@ -15,7 +15,6 @@ const TerminalHero: React.FC = memo(() => {
       className="relative min-h-screen flex items-center justify-center pt-14 overflow-x-clip"
       style={{ background: '#020408' }}
     >
-      {/* CRT scanline grid */}
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
@@ -27,18 +26,22 @@ const TerminalHero: React.FC = memo(() => {
         }}
       />
 
-      {/* Phosphor ambient glow */}
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 45%, rgba(0,200,80,0.04) 0%, transparent 70%)' }}
+        style={{
+          background:
+            'radial-gradient(ellipse 70% 50% at 50% 45%, rgba(0,200,80,0.04) 0%, transparent 70%)',
+        }}
       />
 
-      {/* Vignette */}
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.7) 100%)' }}
+        style={{
+          background:
+            'radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.7) 100%)',
+        }}
       />
 
       <TerminalWindow
@@ -47,7 +50,6 @@ const TerminalHero: React.FC = memo(() => {
         showCommands={showCommands}
       />
 
-      {/* Scroll cue */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
         <button
           onClick={toAbout}

@@ -30,14 +30,9 @@ interface UsePortfolioChatReturn {
 const WELCOME = makeMsg(
   'bot',
   "Hi there! 👋 I'm Rohit's portfolio assistant.\n\nAsk me anything about his skills, projects, or experience — or tap a quick option below.",
-  'intro'
+  'intro',
 )
 
-/**
- * usePortfolioChat — manages the full chatbot conversation state.
- * Pure state machine: send → classify → delay → respond.
- * No leaked timers — clears on unmount.
- */
 export const usePortfolioChat = (): UsePortfolioChatReturn => {
   const [state, setState] = useState<ChatState>({
     messages: [WELCOME],
@@ -48,10 +43,7 @@ export const usePortfolioChat = (): UsePortfolioChatReturn => {
   const [unread, setUnread] = useState(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const sendMessage = useCallback((
-    text: string,
-    explicitIntent?: BotIntent
-  ): void => {
+  const sendMessage = useCallback((text: string, explicitIntent?: BotIntent): void => {
     const trimmed = text.trim()
     if (!trimmed) return
 
@@ -62,7 +54,7 @@ export const usePortfolioChat = (): UsePortfolioChatReturn => {
 
     const userMsg = makeMsg('user', trimmed, intent)
 
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       messages: [...prev.messages, userMsg],
       inputVal: '',
@@ -72,11 +64,11 @@ export const usePortfolioChat = (): UsePortfolioChatReturn => {
     timerRef.current = setTimeout(() => {
       const botMsg = makeMsg('bot', generateResponse(intent), intent)
 
-      setState(prev => {
+      setState((prev) => {
         const nextMessages = [...prev.messages, botMsg]
 
         if (!prev.isOpen) {
-          setUnread(u => u + 1)
+          setUnread((u) => u + 1)
         }
 
         return {
@@ -89,16 +81,16 @@ export const usePortfolioChat = (): UsePortfolioChatReturn => {
   }, [])
 
   const setInputVal = useCallback((v: string): void => {
-    setState(prev => ({ ...prev, inputVal: v }))
+    setState((prev) => ({ ...prev, inputVal: v }))
   }, [])
 
   const toggleOpen = useCallback((): void => {
-    setState(prev => ({ ...prev, isOpen: !prev.isOpen }))
+    setState((prev) => ({ ...prev, isOpen: !prev.isOpen }))
     setUnread(0)
   }, [])
 
   const openChat = useCallback((): void => {
-    setState(prev => ({ ...prev, isOpen: true }))
+    setState((prev) => ({ ...prev, isOpen: true }))
     setUnread(0)
   }, [])
 

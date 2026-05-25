@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback } from 'react'
 import { EXPERIENCE_DATA } from '@/features/experience/constants/experience'
-import RevealWrapper   from '@/shared/components/RevealWrapper'
-import CompanyList     from '@/features/experience/components/CompanyList'
+import RevealWrapper from '@/shared/components/RevealWrapper'
+import CompanyList from '@/features/experience/components/CompanyList'
 import ExperienceDetail from '@/features/experience/components/ExperienceDetail'
 
 const ExperienceSection: React.FC = memo(() => {
@@ -16,8 +16,12 @@ const ExperienceSection: React.FC = memo(() => {
       <div className="section-container">
         <RevealWrapper>
           <div className="text-center mb-10">
-            <p className="text-xs font-mono text-primary uppercase tracking-widest mb-2">Experience</p>
-            <h2 id="exp-heading" className="heading-lg text-foreground">Work History</h2>
+            <p className="text-xs font-mono text-primary uppercase tracking-widest mb-2">
+              Experience
+            </p>
+            <h2 id="exp-heading" className="heading-lg text-foreground">
+              Work History
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-3 lg:gap-4 lg:items-start">

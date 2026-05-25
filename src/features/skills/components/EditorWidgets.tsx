@@ -8,7 +8,7 @@ interface MinimapProps {
 }
 
 export const Minimap: React.FC<MinimapProps> = memo(({ category }) => {
-  const group = SKILLS_DATA.find(g => g.category === category)
+  const group = SKILLS_DATA.find((g) => g.category === category)
   if (!group) return null
   return (
     <div className="w-16 shrink-0 border-l border-[#2a2a3a] bg-[#0d0d14] overflow-hidden relative hidden xl:block">
@@ -32,7 +32,7 @@ Minimap.displayName = 'Minimap'
 
 export const TierLegend: React.FC = memo(() => (
   <div className="flex items-center gap-4 px-4 py-2 border-t border-[#2a2a3a] bg-[#0d0d14]">
-    {(['expert', 'proficient', 'familiar'] as const).map(tier => (
+    {(['expert', 'proficient', 'familiar'] as const).map((tier) => (
       <div key={tier} className="flex items-center gap-1.5">
         <span className="text-xs font-mono" style={{ color: TIER_TOKENS[tier].comment }}>
           {TIER_TOKENS[tier].badge}

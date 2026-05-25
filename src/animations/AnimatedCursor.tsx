@@ -1,15 +1,8 @@
 import React, { useEffect, useRef, useState, memo, useCallback } from 'react'
-
-/**
- * PARTICLE TRAIL CURSOR
- * - Sharp crosshair dot that tracks exactly
- * - 12 glowing colour particles that spawn at cursor and drift up/out
- * - On hover: particles become more vivid, dot becomes a ring
- * - On click: burst of 8 particles explode outward
- * Zero external deps — pure canvas-free DOM particles
- */
-
-interface Pos { x: number; y: number }
+interface Pos {
+  x: number
+  y: number
+}
 
 interface Particle {
   id: number
@@ -45,17 +38,17 @@ const AnimatedCursor: React.FC = memo(() => {
       const speed = burst ? 2.5 + Math.random() * 3 : 0.4 + Math.random() * 1.2
       particles.current.push({
         id: nextId(),
-        x, y,
+        x,
+        y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - (burst ? 0 : 1.5),
         size: burst ? 4 + Math.random() * 3 : 2 + Math.random() * 3,
         alpha: 1,
-        hue: 200 + Math.random() * 60,  // sky-blue to purple range
+        hue: 200 + Math.random() * 60,
         life: 0,
         maxLife: burst ? 35 : 22 + Math.random() * 14,
       })
     }
-    // cap pool
     if (particles.current.length > 80) {
       particles.current = particles.current.slice(-80)
     }
@@ -65,22 +58,20 @@ const AnimatedCursor: React.FC = memo(() => {
     const container = containerRef.current
     if (!container) return
 
-    // Remove dead DOM particles
     const dead = new Set<number>()
-    particles.current.forEach(p => {
+    particles.current.forEach((p) => {
       if (p.life >= p.maxLife) dead.add(p.id)
     })
-    dead.forEach(id => {
+    dead.forEach((id) => {
       const el = document.getElementById(`cp-${id}`)
       if (el) container.removeChild(el)
     })
-    particles.current = particles.current.filter(p => !dead.has(p.id))
+    particles.current = particles.current.filter((p) => !dead.has(p.id))
 
-    // Update + create DOM particles
-    particles.current.forEach(p => {
+    particles.current.forEach((p) => {
       p.x += p.vx
       p.y += p.vy
-      p.vy += 0.04  // gravity
+      p.vy += 0.04
       p.life += 1
       p.alpha = 1 - p.life / p.maxLife
 
@@ -117,7 +108,6 @@ const AnimatedCursor: React.FC = memo(() => {
       pos.current = { x: e.clientX, y: e.clientY }
       if (!visible) setVisible(true)
 
-      // Spawn trail particle every 30ms
       const now = performance.now()
       if (now - lastSpawn.current > 30) {
         spawnParticle(e.clientX, e.clientY)
@@ -146,9 +136,9 @@ const AnimatedCursor: React.FC = memo(() => {
     document.addEventListener('mouseleave', onLeave)
 
     const targets = document.querySelectorAll<HTMLElement>(
-      'a,button,[role="button"],input,textarea,select,label'
+      'a,button,[role="button"],input,textarea,select,label',
     )
-    targets.forEach(el => {
+    targets.forEach((el) => {
       el.addEventListener('mouseenter', onEnter)
       el.addEventListener('mouseleave', onOut)
     })
@@ -158,12 +148,11 @@ const AnimatedCursor: React.FC = memo(() => {
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('click', onClick)
       document.removeEventListener('mouseleave', onLeave)
-      targets.forEach(el => {
+      targets.forEach((el) => {
         el.removeEventListener('mouseenter', onEnter)
         el.removeEventListener('mouseleave', onOut)
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
@@ -172,16 +161,19 @@ const AnimatedCursor: React.FC = memo(() => {
 
   return (
     <>
-      {/* Particle container */}
-      <div ref={containerRef} aria-hidden="true" style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 9998 }} />
+      <div
+        ref={containerRef}
+        aria-hidden="true"
+        style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 9998 }}
+      />
 
-      {/* Sharp dot */}
       <div
         ref={dotRef}
         aria-hidden="true"
         style={{
           position: 'fixed',
-          top: 0, left: 0,
+          top: 0,
+          left: 0,
           width: hovering ? '12px' : '6px',
           height: hovering ? '12px' : '6px',
           borderRadius: '50%',
@@ -192,7 +184,8 @@ const AnimatedCursor: React.FC = memo(() => {
           opacity: visible ? 1 : 0,
           willChange: 'transform, width, height',
           boxShadow: `0 0 ${hovering ? 10 : 6}px hsl(var(--primary) / 0.7)`,
-          transition: 'width .2s ease, height .2s ease, background .2s ease, border .2s ease, opacity .3s ease, box-shadow .2s ease',
+          transition:
+            'width .2s ease, height .2s ease, background .2s ease, border .2s ease, opacity .3s ease, box-shadow .2s ease',
         }}
       />
     </>

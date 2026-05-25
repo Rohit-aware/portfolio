@@ -179,24 +179,21 @@ The download button in the Navbar and the terminal hero's `./resume` command wil
 All features are controlled from a single file:
 
 ```ts
-// src/config/featureFlags.ts
-
 export const FLAGS = {
-  SECTION_ABOUT: true, // hide any section instantly
+  SECTION_ABOUT: true,
   SECTION_SKILLS: true,
   SECTION_PROJECTS: true,
   SECTION_EXPERIENCE: true,
   SECTION_CONTACT: true,
 
-  HERO_TERMINAL: false, // true → CRT terminal boot sequence
-  HERO_3D_GLOBE: true, // false → CSS Phone3D mockup
+  HERO_TERMINAL: false,
+  HERO_3D_GLOBE: true,
 
-  SKILLS_TERMINAL: true, // VS Code editor (highest priority)
-  SKILLS_RADIAL: true, // Constellation (fallback if TERMINAL=false)
-  // Legacy pills (fallback if both false)
+  SKILLS_TERMINAL: true,
+  SKILLS_RADIAL: true,
 
-  PORTFOLIO_CHAT: true, // floating chatbot FAB
-  ANIMATED_CURSOR: true, // spotlight cursor
+  PORTFOLIO_CHAT: true,
+  ANIMATED_CURSOR: true,
 }
 ```
 

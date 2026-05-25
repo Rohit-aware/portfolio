@@ -4,18 +4,20 @@ import { cv } from '@/shared/utils/cn'
 
 const companyBtnV = cv(
   'w-full text-left px-4 py-3.5 rounded-xl border transition-all duration-200',
-  { state: {
-    active:   'bg-primary/10 border-primary/25',
-    inactive: 'border-transparent hover:bg-surface hover:border-border',
-  }},
+  {
+    state: {
+      active: 'bg-primary/10 border-primary/25',
+      inactive: 'border-transparent hover:bg-surface hover:border-border',
+    },
+  },
 )
 const companyNameV = cv('text-sm font-semibold', {
   state: { active: 'text-foreground', inactive: 'text-muted-foreground' },
 })
 
 interface CompanyListProps {
-  readonly activeIdx:    number
-  readonly onSelect:     (i: number) => void
+  readonly activeIdx: number
+  readonly onSelect: (i: number) => void
 }
 
 const CompanyList: React.FC<CompanyListProps> = memo(({ activeIdx, onSelect }) => (

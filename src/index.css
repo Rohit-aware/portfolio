@@ -7,48 +7,65 @@
    DESIGN TOKENS
    ───────────────────────────────────────────────────────────── */
 :root {
-  --background:         215 25% 7%;
-  --foreground:         215 20% 93%;
-  --card:               215 22% 10%;
-  --card-foreground:    215 20% 93%;
-  --surface:            215 20% 12%;
-  --surface-elevated:   215 18% 15%;
-  --primary:            205 82% 58%;
+  --background: 215 25% 7%;
+  --foreground: 215 20% 93%;
+  --card: 215 22% 10%;
+  --card-foreground: 215 20% 93%;
+  --surface: 215 20% 12%;
+  --surface-elevated: 215 18% 15%;
+  --primary: 205 82% 58%;
   --primary-foreground: 215 25% 7%;
-  --secondary:          215 18% 16%;
+  --secondary: 215 18% 16%;
   --secondary-foreground: 215 18% 80%;
-  --muted:              215 18% 13%;
-  --muted-foreground:   215 12% 50%;
-  --border:             215 15% 16%;
-  --ring:               205 82% 58%;
-  --gradient-start:     205 82% 60%;
-  --gradient-mid:       220 75% 62%;
-  --gradient-end:       235 68% 60%;
+  --muted: 215 18% 13%;
+  --muted-foreground: 215 12% 50%;
+  --border: 215 15% 16%;
+  --ring: 205 82% 58%;
+  --gradient-start: 205 82% 60%;
+  --gradient-mid: 220 75% 62%;
+  --gradient-end: 235 68% 60%;
 }
 .dark {
-  --background:         215 25% 7%;  --foreground:       215 20% 93%;
-  --card:               215 22% 10%; --card-foreground:  215 20% 93%;
-  --surface:            215 20% 12%; --surface-elevated: 215 18% 15%;
-  --primary:            205 82% 58%; --primary-foreground: 215 25% 7%;
-  --secondary:          215 18% 16%; --secondary-foreground: 215 18% 80%;
-  --muted:              215 18% 13%; --muted-foreground: 215 12% 50%;
-  --border:             215 15% 16%; --ring: 205 82% 58%;
+  --background: 215 25% 7%;
+  --foreground: 215 20% 93%;
+  --card: 215 22% 10%;
+  --card-foreground: 215 20% 93%;
+  --surface: 215 20% 12%;
+  --surface-elevated: 215 18% 15%;
+  --primary: 205 82% 58%;
+  --primary-foreground: 215 25% 7%;
+  --secondary: 215 18% 16%;
+  --secondary-foreground: 215 18% 80%;
+  --muted: 215 18% 13%;
+  --muted-foreground: 215 12% 50%;
+  --border: 215 15% 16%;
+  --ring: 205 82% 58%;
 }
 html:not(.dark) {
-  --background: 215 20% 98%; --foreground: 215 22% 9%;
-  --card: 0 0% 100%;         --card-foreground: 215 22% 9%;
-  --surface: 215 16% 95%;    --surface-elevated: 215 16% 97%;
-  --primary: 205 70% 44%;    --primary-foreground: 0 0% 100%;
-  --secondary: 215 14% 90%;  --secondary-foreground: 215 18% 22%;
-  --muted: 215 12% 92%;      --muted-foreground: 215 12% 44%;
-  --border: 215 14% 87%;     --ring: 205 70% 44%;
+  --background: 215 20% 98%;
+  --foreground: 215 22% 9%;
+  --card: 0 0% 100%;
+  --card-foreground: 215 22% 9%;
+  --surface: 215 16% 95%;
+  --surface-elevated: 215 16% 97%;
+  --primary: 205 70% 44%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 215 14% 90%;
+  --secondary-foreground: 215 18% 22%;
+  --muted: 215 12% 92%;
+  --muted-foreground: 215 12% 44%;
+  --border: 215 14% 87%;
+  --ring: 205 70% 44%;
 }
 
 /* ─────────────────────────────────────────────────────────────
    BASE
    ───────────────────────────────────────────────────────────── */
 @layer base {
-  * { @apply border-border; box-sizing: border-box; }
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
 
   html {
     scroll-behavior: smooth;
@@ -59,8 +76,12 @@ html:not(.dark) {
     overflow-x: hidden;
   }
   @media (pointer: coarse) {
-    html { cursor: auto; }
-    *    { cursor: auto !important; }
+    html {
+      cursor: auto;
+    }
+    * {
+      cursor: auto !important;
+    }
   }
 
   body {
@@ -73,25 +94,52 @@ html:not(.dark) {
     -ms-user-select: none;
     user-select: none;
   }
-  
+
   @media print {
     body {
       display: none !important;
     }
   }
-  a, button, [role="button"], input, textarea, select { cursor: none; }
+  a,
+  button,
+  [role='button'],
+  input,
+  textarea,
+  select {
+    cursor: none;
+  }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-display font-bold;
     letter-spacing: -0.02em;
   }
-  code, pre { font-family: 'JetBrains Mono', monospace; }
-  ::selection { background: hsl(var(--primary) / 0.2); color: hsl(var(--foreground)); }
+  code,
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  ::selection {
+    background: hsl(var(--primary) / 0.2);
+    color: hsl(var(--foreground));
+  }
 
-  ::-webkit-scrollbar       { width: 4px; }
-  ::-webkit-scrollbar-track { background: hsl(var(--background)); }
-  ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.5); }
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -99,8 +147,12 @@ html:not(.dark) {
    ───────────────────────────────────────────────────────────── */
 @layer components {
   /* ── LAYOUT ── */
-  .section-container { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-10; }
-  .section-padding   { @apply py-10 sm:py-14 lg:py-20; }
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-10;
+  }
+  .section-padding {
+    @apply py-10 sm:py-14 lg:py-10;
+  }
 
   /* ── TYPOGRAPHY ── */
   .heading-xl {
@@ -108,24 +160,40 @@ html:not(.dark) {
     letter-spacing: -0.035em;
     line-height: 1.02;
   }
-  .heading-lg  { @apply text-2xl sm:text-3xl font-bold;     letter-spacing: -0.025em; }
-  .heading-md  { @apply text-base sm:text-xl font-semibold; letter-spacing: -0.015em; }
+  .heading-lg {
+    @apply text-2xl sm:text-3xl font-bold;
+    letter-spacing: -0.025em;
+  }
+  .heading-md {
+    @apply text-base sm:text-xl font-semibold;
+    letter-spacing: -0.015em;
+  }
 
   /* ── GRADIENT TEXT ── */
   .text-gradient {
-    background: linear-gradient(125deg,
-      hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)));
+    background: linear-gradient(
+      125deg,
+      hsl(var(--gradient-start)),
+      hsl(var(--gradient-mid)),
+      hsl(var(--gradient-end))
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   /* ── CARDS ── */
-  .card-glass { @apply bg-card border border-border rounded-2xl; }
-  .card-hover { @apply transition-all duration-300 ease-out; }
+  .card-glass {
+    @apply bg-card border border-border rounded-2xl;
+  }
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
   .card-hover:hover {
     border-color: hsl(var(--primary) / 0.3);
-    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.1), 0 8px 28px hsl(var(--primary) / 0.08);
+    box-shadow:
+      0 0 0 1px hsl(var(--primary) / 0.1),
+      0 8px 28px hsl(var(--primary) / 0.08);
     transform: translateY(-2px);
   }
 
@@ -135,18 +203,28 @@ html:not(.dark) {
            font-semibold text-sm bg-primary text-primary-foreground
            transition-all duration-200 active:scale-95;
   }
-  .btn-primary:hover       { filter: brightness(1.1); }
+  .btn-primary:hover {
+    filter: brightness(1.1);
+  }
   .btn-primary:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+    box-shadow:
+      0 0 0 2px hsl(var(--background)),
+      0 0 0 4px hsl(var(--ring));
   }
   .btn-outline {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl
            font-semibold text-sm border border-border text-foreground
            transition-all duration-200 active:scale-95;
   }
-  .btn-outline:hover       { border-color: hsl(var(--primary)/0.45); background: hsl(var(--primary)/0.05); }
-  .btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px hsl(var(--ring)/0.5); }
+  .btn-outline:hover {
+    border-color: hsl(var(--primary) / 0.45);
+    background: hsl(var(--primary) / 0.05);
+  }
+  .btn-outline:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.5);
+  }
 
   /* ── TAGS ── */
   .tag {
@@ -155,13 +233,37 @@ html:not(.dark) {
   }
 
   /* ── SCROLL REVEAL ── */
-  .reveal         { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   /* ── DELAYS ── */
-  .delay-100 { transition-delay: 100ms; } .delay-200 { transition-delay: 200ms; }
-  .delay-300 { transition-delay: 300ms; } .delay-400 { transition-delay: 400ms; }
-  .delay-500 { transition-delay: 500ms; } .delay-600 { transition-delay: 600ms; }
+  .delay-100 {
+    transition-delay: 100ms;
+  }
+  .delay-200 {
+    transition-delay: 200ms;
+  }
+  .delay-300 {
+    transition-delay: 300ms;
+  }
+  .delay-400 {
+    transition-delay: 400ms;
+  }
+  .delay-500 {
+    transition-delay: 500ms;
+  }
+  .delay-600 {
+    transition-delay: 600ms;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -178,27 +280,45 @@ html:not(.dark) {
    GLOW ORBS
    ───────────────────────────────────────────────────────────── */
 .hero-glow {
-  position: absolute; border-radius: 50%;
-  filter: blur(90px); pointer-events: none;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
 }
 
 /* ─────────────────────────────────────────────────────────────
    3D PHONE MOCKUP
    ───────────────────────────────────────────────────────────── */
-.phone-wrapper { perspective: 1000px; perspective-origin: 50% 50%; }
+.phone-wrapper {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
 .phone-3d {
   transform-style: preserve-3d;
   transition: transform 0.12s ease-out;
   will-change: transform;
 }
 @keyframes phoneFloat {
-  0%,100% { transform: rotateX(4deg) rotateY(-8deg) translateY(0px);  }
-  50%      { transform: rotateX(-2deg) rotateY(6deg) translateY(-14px); }
+  0%,
+  100% {
+    transform: rotateX(4deg) rotateY(-8deg) translateY(0px);
+  }
+  50% {
+    transform: rotateX(-2deg) rotateY(6deg) translateY(-14px);
+  }
 }
-.phone-float { animation: phoneFloat 5s ease-in-out infinite; }
+.phone-float {
+  animation: phoneFloat 5s ease-in-out infinite;
+}
 .phone-screen-glow {
-  position: absolute; inset: 0; border-radius: inherit;
-  background: radial-gradient(ellipse at 30% 30%, hsl(var(--primary)/0.35) 0%, transparent 65%);
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at 30% 30%,
+    hsl(var(--primary) / 0.35) 0%,
+    transparent 65%
+  );
   pointer-events: none;
 }
 
@@ -206,16 +326,29 @@ html:not(.dark) {
    EMOJI CLOUD
    ───────────────────────────────────────────────────────────── */
 @keyframes emojiFloat {
-  0%   { transform: translateY(0)      scale(0)   rotate(0deg);   opacity: 0; }
-  15%  { transform: translateY(-20px)  scale(1.2) rotate(-8deg);  opacity: 1; }
-  85%  { transform: translateY(-110px) scale(1)   rotate(10deg);  opacity: 0.8; }
-  100% { transform: translateY(-140px) scale(0.6) rotate(15deg);  opacity: 0; }
+  0% {
+    transform: translateY(0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    transform: translateY(-20px) scale(1.2) rotate(-8deg);
+    opacity: 1;
+  }
+  85% {
+    transform: translateY(-110px) scale(1) rotate(10deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-140px) scale(0.6) rotate(15deg);
+    opacity: 0;
+  }
 }
 .emoji-particle {
   position: absolute;
   pointer-events: none;
   font-size: 22px;
-  animation: emojiFloat var(--dur, 2.2s) cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s) infinite;
+  animation: emojiFloat var(--dur, 2.2s) cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s)
+    infinite;
   will-change: transform, opacity;
   user-select: none;
 }
@@ -235,65 +368,141 @@ html:not(.dark) {
    SCROLL ORB / NAV SLIDE-IN / FADE-IN ANIMATIONS
    ───────────────────────────────────────────────────────────── */
 @keyframes orbPulse {
-  0%, 100% { transform: scale(1);   opacity: 0.6; }
-  50%       { transform: scale(1.5); opacity: 1; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
 }
 @keyframes navSlideDown {
-  from { transform: translateY(-100%); opacity: 0; }
-  to   { transform: translateY(0);     opacity: 1; }
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
-.animate-nav-slide-down { animation: navSlideDown 0.4s cubic-bezier(0.4,0,0.2,1) both; }
+.animate-nav-slide-down {
+  animation: navSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.animate-fade-in-up { animation: fadeInUp 0.55s ease-out both; }
-.animate-fade-in    { animation: fadeInUp 0.4s  ease-out both; }
+.animate-fade-in-up {
+  animation: fadeInUp 0.55s ease-out both;
+}
+.animate-fade-in {
+  animation: fadeInUp 0.4s ease-out both;
+}
 
-@keyframes scrollBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+@keyframes scrollBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(7px);
+  }
+}
 
 /* ─────────────────────────────────────────────────────────────
    MOBILE OVERRIDES
    Tested at 320 / 375 / 390 / 414 px
    ───────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .heading-xl    { font-size: 1.85rem; line-height: 1.1; }
-  .heading-lg    { font-size: 1.5rem; }
-  .section-padding { padding-top: 2.5rem; padding-bottom: 2.5rem; }
-  .card-glass    { border-radius: 1rem; }
+  .heading-xl {
+    font-size: 1.85rem;
+    line-height: 1.1;
+  }
+  .heading-lg {
+    font-size: 1.5rem;
+  }
+  .section-padding {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .card-glass {
+    border-radius: 1rem;
+  }
   /* Hard clip on every section — nothing can bleed past viewport */
-  section        { overflow-x: clip; }
+  section {
+    overflow-x: clip;
+  }
 }
 @media (max-width: 400px) {
-  .heading-xl { font-size: 1.65rem; }
+  .heading-xl {
+    font-size: 1.65rem;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
    CONSTELLATION SKILLS
    ───────────────────────────────────────────────────────────── */
 @keyframes pulseRing {
-  0%   { r: 12; opacity: 0.8; }
-  100% { r: 20; opacity: 0; }
+  0% {
+    r: 12;
+    opacity: 0.8;
+  }
+  100% {
+    r: 20;
+    opacity: 0;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
    TERMINAL CURSOR BLINK
    ───────────────────────────────────────────────────────────── */
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-.animate-blink { animation: blink 1s step-end infinite; }
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
 
 /* ─────────────────────────────────────────────────────────────
    HIDE SCROLLBAR — keep scroll, hide track
    Used on horizontal project pill list etc.
    ───────────────────────────────────────────────────────────── */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 /* ─────────────────────────────────────────────────────────────
    CHAT DOT BOUNCE
    ───────────────────────────────────────────────────────────── */
 @keyframes dotBounce {
-  0%, 60%, 100% { transform: translateY(0);    opacity: 0.4; }
-  30%            { transform: translateY(-5px); opacity: 1; }
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
 }

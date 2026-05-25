@@ -8,13 +8,7 @@ import { downloadResume } from '@/shared/utils/resume'
 import { cn, cv } from '@/shared/utils/cn'
 import type { ThemeMode } from '@/types'
 
-/* ─────────────────────────────────────────────────────────────
-   VARIANT MAPS  —  defined once, used by cv()
-   No inline ternaries or .join() anywhere in this file.
-   ───────────────────────────────────────────────────────────── */
-
 const navPillVariants = cv(
-  // base — all pills share this
   cn(
     'relative px-4 py-1.5 rounded-xl text-sm font-medium',
     'transition-all duration-300 ease-out',
@@ -23,7 +17,6 @@ const navPillVariants = cv(
   ),
   {
     state: {
-      // Glass torch effect: blur + primary tint + inner glow border
       active: cn(
         'text-primary font-semibold',
         'bg-primary/10',
@@ -36,7 +29,7 @@ const navPillVariants = cv(
         'hover:text-foreground hover:bg-surface/70 hover:border-border',
       ),
     },
-  }
+  },
 )
 
 const mobileItemVariants = cv(
@@ -47,9 +40,10 @@ const mobileItemVariants = cv(
   {
     state: {
       active: 'bg-primary/10 text-primary border border-primary/20',
-      inactive: 'text-muted-foreground hover:text-foreground hover:bg-surface border border-transparent',
+      inactive:
+        'text-muted-foreground hover:text-foreground hover:bg-surface border border-transparent',
     },
-  }
+  },
 )
 
 const headerVariants = cv(
@@ -67,22 +61,14 @@ const headerVariants = cv(
       yes: '-translate-y-full',
       no: 'translate-y-0',
     },
-  }
+  },
 )
-
-/* ─────────────────────────────────────────────────────────────
-   TYPES
-   ───────────────────────────────────────────────────────────── */
 
 interface NavbarProps {
   readonly isDark: boolean
   readonly onToggleTheme: () => void
   readonly theme: ThemeMode
 }
-
-/* ─────────────────────────────────────────────────────────────
-   NavPill — glass torch active state
-   ───────────────────────────────────────────────────────────── */
 
 interface NavPillProps {
   readonly id: string
@@ -100,13 +86,13 @@ const NavPill: React.FC<NavPillProps> = memo(({ id, label, isActive, onClick }) 
       aria-current={isActive ? 'page' : undefined}
       className={navPillVariants({ state: isActive ? 'active' : 'inactive' })}
     >
-      {/* Glass torch — subtle radial glow behind active item */}
       {isActive && (
         <span
           aria-hidden="true"
           className="absolute inset-0 rounded-xl pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse at 50% 0%, hsl(var(--primary)/0.18) 0%, transparent 70%)',
+            background:
+              'radial-gradient(ellipse at 50% 0%, hsl(var(--primary)/0.18) 0%, transparent 70%)',
           }}
         />
       )}
@@ -115,10 +101,6 @@ const NavPill: React.FC<NavPillProps> = memo(({ id, label, isActive, onClick }) 
   )
 })
 NavPill.displayName = 'NavPill'
-
-/* ─────────────────────────────────────────────────────────────
-   MobileNavItem
-   ───────────────────────────────────────────────────────────── */
 
 interface MobileNavItemProps {
   readonly id: string
@@ -142,17 +124,16 @@ const MobileNavItem: React.FC<MobileNavItemProps> = memo(
         </span>
         {label}
         {isActive && (
-          <span aria-hidden="true" className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
+          <span
+            aria-hidden="true"
+            className="ml-auto w-1.5 h-1.5 rounded-full bg-primary"
+          />
         )}
       </button>
     )
-  }
+  },
 )
 MobileNavItem.displayName = 'MobileNavItem'
-
-/* ─────────────────────────────────────────────────────────────
-   ThemeToggle — isolated button
-   ───────────────────────────────────────────────────────────── */
 
 interface ThemeToggleProps {
   readonly isDark: boolean
@@ -170,14 +151,14 @@ const ThemeToggle: React.FC<ThemeToggleProps> = memo(({ isDark, onToggle }) => (
       'transition-all duration-200',
     )}
   >
-    {isDark ? <Sun size={14} aria-hidden="true" /> : <Moon size={14} aria-hidden="true" />}
+    {isDark ? (
+      <Sun size={14} aria-hidden="true" />
+    ) : (
+      <Moon size={14} aria-hidden="true" />
+    )}
   </button>
 ))
 ThemeToggle.displayName = 'ThemeToggle'
-
-/* ─────────────────────────────────────────────────────────────
-   Navbar
-   ───────────────────────────────────────────────────────────── */
 
 const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
   const activeId = useScrollSpy(SECTION_IDS)
@@ -189,11 +170,10 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
     setMobileOpen(false)
   }, [])
 
-  const toggleMobile = useCallback(() => setMobileOpen(p => !p), [])
+  const toggleMobile = useCallback(() => setMobileOpen((p) => !p), [])
 
   return (
     <>
-      {/* ── Header ── */}
       <header
         className={headerVariants({
           scrolled: isScrolled ? 'yes' : 'no',
@@ -202,8 +182,6 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
       >
         <div className="section-container">
           <div className="flex items-center justify-between h-14 gap-3">
-
-            {/* Logo */}
             <button
               onClick={() => handleNavClick('hero')}
               aria-label="Back to top"
@@ -211,11 +189,13 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
                 'flex items-center gap-2 font-bold text-foreground text-sm shrink-0 group',
               )}
             >
-              <span className={cn(
-                'w-7 h-7 rounded-lg bg-primary/12 border border-primary/25',
-                'flex items-center justify-center text-primary text-xs font-bold',
-                'group-hover:bg-primary/20 transition-colors duration-200',
-              )}>
+              <span
+                className={cn(
+                  'w-7 h-7 rounded-lg bg-primary/12 border border-primary/25',
+                  'flex items-center justify-center text-primary text-xs font-bold',
+                  'group-hover:bg-primary/20 transition-colors duration-200',
+                )}
+              >
                 RA
               </span>
               <span className="hidden sm:block">
@@ -223,12 +203,11 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
               </span>
             </button>
 
-            {/* Desktop nav — glass torch active pills */}
             <nav
               aria-label="Main navigation"
               className="hidden lg:flex items-center gap-1"
             >
-              {NAV_ITEMS.map(item => (
+              {NAV_ITEMS.map((item) => (
                 <NavPill
                   key={item.id}
                   id={item.id}
@@ -239,7 +218,6 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
               ))}
             </nav>
 
-            {/* Controls */}
             <div className="flex items-center gap-2 shrink-0">
               <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
 
@@ -262,17 +240,17 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
                   'hover:text-foreground hover:bg-surface transition-all duration-200',
                 )}
               >
-                {mobileOpen
-                  ? <X size={15} aria-hidden="true" />
-                  : <Menu size={15} aria-hidden="true" />
-                }
+                {mobileOpen ? (
+                  <X size={15} aria-hidden="true" />
+                ) : (
+                  <Menu size={15} aria-hidden="true" />
+                )}
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* ── Mobile drawer ── */}
       <div
         id="mobile-menu"
         aria-hidden={!mobileOpen}
@@ -281,7 +259,6 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
           mobileOpen ? 'visible' : 'invisible pointer-events-none',
         )}
       >
-        {/* Backdrop */}
         <div
           onClick={() => setMobileOpen(false)}
           className={cn(
@@ -291,7 +268,6 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
           )}
         />
 
-        {/* Panel */}
         <div
           className={cn(
             'absolute top-[58px] left-3 right-3 rounded-2xl p-2 shadow-2xl',

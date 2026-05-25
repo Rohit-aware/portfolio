@@ -12,31 +12,9 @@ import { QUICK_CHIPS } from '@/services/portfolioChatEngine'
 import { cn } from '@/shared/utils/cn'
 import type { BotMessage, QuickChip } from '@/services/portfolioChatEngine'
 
-/**
- * PortfolioChat — floating bottom-right chatbot panel.
- *
- * Layout:
- *  ┌─────────────────────────────┐
- *  │ Header (title + close)      │
- *  ├─────────────────────────────┤
- *  │ Messages scroll area        │
- *  │ · bot bubbles (left)        │
- *  │ · user bubbles (right)      │
- *  │ · typing indicator          │
- *  ├─────────────────────────────┤
- *  │ Quick chip strip            │
- *  ├─────────────────────────────┤
- *  │ Input + send button         │
- *  └─────────────────────────────┘
- *
- * Feature-flagged — rendered in App.tsx behind FLAGS.PORTFOLIO_CHAT.
- * No sub-components defined inside this file's component bodies.
- */
-
-/* ── TypingDots — three-dot animation ── */
 const TypingDots: React.FC = memo(() => (
   <div className="flex items-center gap-1 px-1 py-0.5" aria-label="Thinking">
-    {[0, 1, 2].map(i => (
+    {[0, 1, 2].map((i) => (
       <span
         key={i}
         aria-hidden="true"
@@ -48,8 +26,9 @@ const TypingDots: React.FC = memo(() => (
 ))
 TypingDots.displayName = 'TypingDots'
 
-/* ── MessageBubble ── */
-interface BubbleProps { readonly msg: BotMessage }
+interface BubbleProps {
+  readonly msg: BotMessage
+}
 
 const MessageBubble: React.FC<BubbleProps> = memo(({ msg }) => {
   const isBot = msg.role === 'bot'
@@ -86,23 +65,26 @@ const MessageBubble: React.FC<BubbleProps> = memo(({ msg }) => {
 })
 MessageBubble.displayName = 'MessageBubble'
 
-/* ── PortfolioChat ── */
 const PortfolioChat: React.FC = memo(() => {
   const {
-    messages, isTyping, inputVal, isOpen, unread,
-    setInputVal, sendMessage, toggleOpen,
+    messages,
+    isTyping,
+    inputVal,
+    isOpen,
+    unread,
+    setInputVal,
+    sendMessage,
+    toggleOpen,
   } = usePortfolioChat()
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
-  /* Auto-scroll to latest message */
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages.length, isTyping])
 
-  /* Focus input when opened */
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 150)
@@ -114,24 +96,32 @@ const PortfolioChat: React.FC = memo(() => {
     sendMessage(inputVal)
   }, [inputVal, sendMessage])
 
-  const handleKey = useCallback((e: KeyboardEvent<HTMLTextAreaElement>): void => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
-    }
-  }, [handleSend])
+  const handleKey = useCallback(
+    (e: KeyboardEvent<HTMLTextAreaElement>): void => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        handleSend()
+      }
+    },
+    [handleSend],
+  )
 
-  const handleChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setInputVal(e.target.value)
-  }, [setInputVal])
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLTextAreaElement>): void => {
+      setInputVal(e.target.value)
+    },
+    [setInputVal],
+  )
 
-  const handleChip = useCallback((chip: QuickChip): void => {
-    sendMessage(chip.label, chip.intent)
-  }, [sendMessage])
+  const handleChip = useCallback(
+    (chip: QuickChip): void => {
+      sendMessage(chip.label, chip.intent)
+    },
+    [sendMessage],
+  )
 
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
-      {/* ── Chat Panel ── */}
       <div
         ref={panelRef}
         aria-label="Portfolio chatbot"
@@ -146,7 +136,6 @@ const PortfolioChat: React.FC = memo(() => {
         )}
         style={{ height: isOpen ? 520 : 0 }}
       >
-        {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="relative">
@@ -160,7 +149,9 @@ const PortfolioChat: React.FC = memo(() => {
             </div>
             <div>
               <p className="text-xs font-semibold text-foreground">Ask Rohit's Bot</p>
-              <p className="text-[10px] font-mono text-emerald-400">● Online · answers instantly</p>
+              <p className="text-[10px] font-mono text-emerald-400">
+                ● Online · answers instantly
+              </p>
             </div>
           </div>
           <button
@@ -176,17 +167,15 @@ const PortfolioChat: React.FC = memo(() => {
           </button>
         </div>
 
-        {/* Messages */}
         <div
           className="flex-1 overflow-y-auto px-3 py-3 space-y-3"
           aria-live="polite"
           aria-label="Conversation"
         >
-          {messages.map(msg => (
+          {messages.map((msg) => (
             <MessageBubble key={msg.id} msg={msg} />
           ))}
 
-          {/* Typing indicator */}
           {isTyping && (
             <div className="flex items-end gap-2 animate-fade-in">
               <div
@@ -203,13 +192,12 @@ const PortfolioChat: React.FC = memo(() => {
           <div ref={bottomRef} aria-hidden="true" className="h-px" />
         </div>
 
-        {/* Quick chips */}
         <div
           className="shrink-0 px-3 py-2 border-t border-border bg-card/40 overflow-x-auto"
           style={{ scrollbarWidth: 'none' }}
         >
           <div className="flex gap-1.5 w-max">
-            {QUICK_CHIPS.map(chip => (
+            {QUICK_CHIPS.map((chip) => (
               <button
                 key={chip.label}
                 onClick={() => handleChip(chip)}
@@ -228,7 +216,6 @@ const PortfolioChat: React.FC = memo(() => {
           </div>
         </div>
 
-        {/* Input */}
         <div className="shrink-0 border-t border-border px-3 py-2.5 bg-card flex items-end gap-2">
           <textarea
             ref={inputRef}
@@ -265,7 +252,6 @@ const PortfolioChat: React.FC = memo(() => {
         </div>
       </div>
 
-      {/* ── FAB trigger button ── */}
       <button
         onClick={toggleOpen}
         aria-label={isOpen ? 'Close chat' : 'Open portfolio chat'}
@@ -281,16 +267,21 @@ const PortfolioChat: React.FC = memo(() => {
       >
         <MessageCircle
           size={22}
-          className={cn('transition-all duration-200', isOpen && 'opacity-0 scale-50 absolute')}
+          className={cn(
+            'transition-all duration-200',
+            isOpen && 'opacity-0 scale-50 absolute',
+          )}
           aria-hidden="true"
         />
         <X
           size={20}
-          className={cn('transition-all duration-200 absolute', !isOpen && 'opacity-0 scale-50')}
+          className={cn(
+            'transition-all duration-200 absolute',
+            !isOpen && 'opacity-0 scale-50',
+          )}
           aria-hidden="true"
         />
 
-        {/* Unread badge */}
         {unread > 0 && !isOpen && (
           <span
             aria-label={`${unread} unread message`}

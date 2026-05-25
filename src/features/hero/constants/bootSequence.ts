@@ -25,7 +25,11 @@ export const BOOT_SEQUENCE: readonly BootLine[] = [
   { text: '}', delay: 200 },
   { text: '', delay: 100, skip: true },
   { text: '$ ls ./commands', delay: 400 },
-  { text: 'projects   experience   skills   contact   resume', delay: 400, colour: '#93c5fd' },
+  {
+    text: 'projects   experience   skills   contact   resume',
+    delay: 400,
+    colour: '#93c5fd',
+  },
   { text: '', delay: 100, skip: true },
   { text: '$ _', delay: 300 },
 ] as const

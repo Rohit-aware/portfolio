@@ -8,7 +8,6 @@
  * ─────────────────────────────────────────────────────────────────
  */
 export const FLAGS = {
-
   /* ── SECTIONS — false removes from DOM entirely ── */
   SECTION_ABOUT: true,
   SECTION_SKILLS: true,
@@ -34,10 +33,9 @@ export const FLAGS = {
   /* ── GLOBAL UI ── */
   /** true → Floating portfolio chatbot FAB */
   PORTFOLIO_CHAT: true,
-  PORTFOLIO_ANYALYTICS: false,
+  PORTFOLIO_ANYALYTICS: true,
   /** true → Animated cursor spotlight */
   ANIMATED_CURSOR: true,
-
 } as const satisfies Record<string, boolean>
 
 export type FeatureFlag = keyof typeof FLAGS

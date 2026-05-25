@@ -7,13 +7,26 @@ import React, { memo, useState, useCallback, useRef } from 'react'
  * Lives in /animations — isolated animation concern.
  */
 
-const EMOJIS = ['💻','📱','⚛️','🚀','🎯','✨','🔥','⚡','🛠️','🧩','🎨','📦'] as const
+const EMOJIS = [
+  '💻',
+  '📱',
+  '⚛️',
+  '🚀',
+  '🎯',
+  '✨',
+  '🔥',
+  '⚡',
+  '🛠️',
+  '🧩',
+  '🎨',
+  '📦',
+] as const
 
 interface EmojiParticle {
-  id:    number
+  id: number
   emoji: string
-  x:     number   // % offset from center
-  dur:   number   // animation duration s
+  x: number
+  dur: number
   delay: number
 }
 
@@ -21,25 +34,22 @@ let _eid = 0
 
 const EmojiCloud: React.FC = memo(() => {
   const [particles, setParticles] = useState<EmojiParticle[]>([])
-  const timerRef  = useRef<ReturnType<typeof setInterval> | null>(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const activeRef = useRef(false)
 
   const spawn = useCallback((): void => {
     const newOnes: EmojiParticle[] = Array.from({ length: 3 }, (_, i) => ({
-      id:    ++_eid,
+      id: ++_eid,
       emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)]!,
-      x:     (Math.random() - 0.5) * 80,   // -40 to +40 px
-      dur:   1.8 + Math.random() * 0.8,
+      x: (Math.random() - 0.5) * 80,
+      dur: 1.8 + Math.random() * 0.8,
       delay: i * 0.12,
     }))
 
-    setParticles(prev => [...prev.slice(-18), ...newOnes])
+    setParticles((prev) => [...prev.slice(-18), ...newOnes])
 
-    // Auto-remove after animation completes
     setTimeout(() => {
-      setParticles(prev =>
-        prev.filter(p => !newOnes.find(n => n.id === p.id))
-      )
+      setParticles((prev) => prev.filter((p) => !newOnes.find((n) => n.id === p.id)))
     }, 3200)
   }, [])
 
@@ -57,24 +67,24 @@ const EmojiCloud: React.FC = memo(() => {
 
   return (
     <div className="relative inline-flex items-center justify-center">
-      {/* Emoji particles */}
-      {particles.map(p => (
+      {particles.map((p) => (
         <span
           key={p.id}
           aria-hidden="true"
           className="emoji-particle select-none"
-          style={{
-            left:      `calc(50% + ${p.x}px)`,
-            bottom:    '100%',
-            '--dur':   `${p.dur}s`,
-            '--delay': `${p.delay}s`,
-          } as React.CSSProperties}
+          style={
+            {
+              left: `calc(50% + ${p.x}px)`,
+              bottom: '100%',
+              '--dur': `${p.dur}s`,
+              '--delay': `${p.delay}s`,
+            } as React.CSSProperties
+          }
         >
           {p.emoji}
         </span>
       ))}
 
-      {/* Cloud trigger button */}
       <button
         onMouseEnter={startLoop}
         onMouseLeave={stopLoop}

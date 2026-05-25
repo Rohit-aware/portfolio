@@ -16,7 +16,6 @@ const TerminalWindow: React.FC<TerminalWindowProps> = memo(
       role="region"
       aria-label="Terminal boot sequence"
     >
-      {/* Title bar */}
       <div
         className="flex items-center gap-2 px-4 py-2.5 rounded-t-xl"
         style={{
@@ -38,12 +37,6 @@ const TerminalWindow: React.FC<TerminalWindowProps> = memo(
           rohit@portfolio ~ zsh
         </span>
       </div>
-
-      {/* Terminal body
-          overflow-x: auto lets long lines scroll inside the terminal box
-          instead of pushing the page width.
-          white-space: pre on each line is set in TypedLine.
-      */}
       <div
         className="px-3 py-4 sm:px-5 sm:py-5 rounded-b-xl overflow-x-auto no-scrollbar"
         style={{
@@ -69,7 +62,7 @@ const TerminalWindow: React.FC<TerminalWindowProps> = memo(
         <TerminalCommandBar visible={showCommands} />
       </div>
     </div>
-  )
+  ),
 )
 
 TerminalWindow.displayName = 'TerminalWindow'

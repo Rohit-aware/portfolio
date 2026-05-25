@@ -1,8 +1,3 @@
-/**
- * Inline script injected into <head> BEFORE first paint.
- * Prevents theme flash by setting the class immediately.
- * Must be a pure string — no imports.
- */
 export const THEME_SCRIPT = `
   (function () {
     try {

@@ -2,9 +2,9 @@ import React, { useRef, useEffect, memo } from 'react'
 import { cn } from '@/shared/utils/cn'
 
 interface RevealWrapperProps {
-  readonly children:   React.ReactNode
+  readonly children: React.ReactNode
   readonly className?: string
-  readonly delay?:     number
+  readonly delay?: number
 }
 
 const RevealWrapper: React.FC<RevealWrapperProps> = memo(
@@ -22,7 +22,7 @@ const RevealWrapper: React.FC<RevealWrapperProps> = memo(
             observer.unobserve(el)
           }
         },
-        { threshold: 0.1 }
+        { threshold: 0.1 },
       )
       observer.observe(el)
       return () => observer.disconnect()
@@ -33,7 +33,7 @@ const RevealWrapper: React.FC<RevealWrapperProps> = memo(
         {children}
       </div>
     )
-  }
+  },
 )
 
 RevealWrapper.displayName = 'RevealWrapper'

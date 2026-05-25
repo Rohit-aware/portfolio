@@ -1,9 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 
-/**
- * useLineReveal — drives line-by-line typewriter reveal in the VS Code terminal.
- * Resets and replays whenever the active file (fileKey) changes.
- */
 export const useLineReveal = (fileKey: string, lineCount: number): number => {
   const [revealed, setRevealed] = useState(0)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)

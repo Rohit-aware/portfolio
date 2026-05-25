@@ -1,7 +1,3 @@
-/**
- * terminal.ts — static config for SkillsTerminal VS Code editor.
- * Files tabs, tier visual tokens, VS Code colour tokens.
- */
 import type { SkillCategory, SkillTier } from '@/types'
 
 export interface EditorFile {
@@ -20,9 +16,9 @@ export const EDITOR_FILES: readonly EditorFile[] = [
 
 export interface TierToken {
   readonly badge: string
-  readonly comment: string   // hex colour for JSDoc comment
-  readonly labelBg: string   // Tailwind class
-  readonly labelText: string   // Tailwind class
+  readonly comment: string
+  readonly labelBg: string
+  readonly labelText: string
 }
 
 export const TIER_TOKENS: Record<SkillTier, TierToken> = {
@@ -46,7 +42,6 @@ export const TIER_TOKENS: Record<SkillTier, TierToken> = {
   },
 } as const
 
-/** VS Code Dark+ syntax token colours */
 export const VSCODE_TOKENS = {
   keyword: 'text-[#569cd6]',
   type: 'text-[#4ec9b0]',
@@ -58,16 +53,8 @@ export const VSCODE_TOKENS = {
   number: 'text-[#b5cea8]',
 } as const
 
-
-
-/**
- * Decorative sidebar icons shown in editor
- */
 export const EDITOR_SIDEBAR_ICONS = ['⬡', '◎', '⟁'] as const
 
-/**
- * Order of tiers used for summary pills
- */
 export const SKILL_TIER_ORDER: readonly SkillTier[] = [
   'expert',
   'proficient',

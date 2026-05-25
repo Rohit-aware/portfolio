@@ -11,12 +11,12 @@ export interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
-      theme: 'light', // default, actual initial state driven by persist
+      theme: 'light',
       setThemeState: (t: ThemeMode) => set({ theme: t }),
     }),
     {
       name: 'theme',
       storage: mmkvStorage,
-    }
-  )
+    },
+  ),
 )

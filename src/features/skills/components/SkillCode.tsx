@@ -10,7 +10,7 @@ interface SkillCodeProps {
 }
 
 const SkillCode: React.FC<SkillCodeProps> = memo(({ category, revealed }) => {
-  const group = SKILLS_DATA.find(g => g.category === category)
+  const group = SKILLS_DATA.find((g) => g.category === category)
   if (!group) return null
 
   const varName = category.replace(/[^a-zA-Z]/g, '').toLowerCase() + 'Skills'
@@ -18,44 +18,68 @@ const SkillCode: React.FC<SkillCodeProps> = memo(({ category, revealed }) => {
   type Line = { content: React.ReactNode }
   const lines: Line[] = []
 
-  lines.push({ content: <span className={VSCODE_TOKENS.comment}>{'// ' + category + ' — tech stack'}</span> })
+  lines.push({
+    content: (
+      <span className={VSCODE_TOKENS.comment}>{'// ' + category + ' — tech stack'}</span>
+    ),
+  })
   lines.push({ content: <span className={VSCODE_TOKENS.comment}>{'//'}</span> })
 
-  lines.push({ content: <>
-    <span className={VSCODE_TOKENS.keyword}>export const </span>
-    <span className={VSCODE_TOKENS.prop}>{varName}</span>
-    <span className={VSCODE_TOKENS.punct}> = {'{'}</span>
-  </> })
-
-  group.skills.forEach(skill => {
-    const tok     = TIER_TOKENS[skill.tier]
-    const propKey = skill.name.toLowerCase().replace(/[^a-z0-9]/g, '_')
-    lines.push({ content: <>
-      <span className="pl-4" />
-      <span className={VSCODE_TOKENS.prop}>{propKey}</span>
-      <span className={VSCODE_TOKENS.punct}>: </span>
-      <span className={VSCODE_TOKENS.string}>'{skill.name}'</span>
-      <span className={VSCODE_TOKENS.punct}>,</span>
-      <span className="ml-3" style={{ color: tok.comment }}>{'// ' + tok.badge}</span>
-    </> })
+  lines.push({
+    content: (
+      <>
+        <span className={VSCODE_TOKENS.keyword}>export const </span>
+        <span className={VSCODE_TOKENS.prop}>{varName}</span>
+        <span className={VSCODE_TOKENS.punct}> = {'{'}</span>
+      </>
+    ),
   })
 
-  lines.push({ content: <>
-    <span className={VSCODE_TOKENS.punct}>{'} '}</span>
-    <span className={VSCODE_TOKENS.keyword}>as const</span>
-  </> })
+  group.skills.forEach((skill) => {
+    const tok = TIER_TOKENS[skill.tier]
+    const propKey = skill.name.toLowerCase().replace(/[^a-z0-9]/g, '_')
+    lines.push({
+      content: (
+        <>
+          <span className="pl-4" />
+          <span className={VSCODE_TOKENS.prop}>{propKey}</span>
+          <span className={VSCODE_TOKENS.punct}>: </span>
+          <span className={VSCODE_TOKENS.string}>'{skill.name}'</span>
+          <span className={VSCODE_TOKENS.punct}>,</span>
+          <span className="ml-3" style={{ color: tok.comment }}>
+            {'// ' + tok.badge}
+          </span>
+        </>
+      ),
+    })
+  })
+
+  lines.push({
+    content: (
+      <>
+        <span className={VSCODE_TOKENS.punct}>{'} '}</span>
+        <span className={VSCODE_TOKENS.keyword}>as const</span>
+      </>
+    ),
+  })
   lines.push({ content: <></> })
 
-  lines.push({ content: <>
-    <span className={VSCODE_TOKENS.keyword}>type </span>
-    <span className={VSCODE_TOKENS.type}>{category.replace(/[^a-zA-Z]/g, '')}Tier</span>
-    <span className={VSCODE_TOKENS.punct}> = </span>
-    <span className={VSCODE_TOKENS.string}>'expert'</span>
-    <span className={VSCODE_TOKENS.punct}> | </span>
-    <span className={VSCODE_TOKENS.string}>'proficient'</span>
-    <span className={VSCODE_TOKENS.punct}> | </span>
-    <span className={VSCODE_TOKENS.string}>'familiar'</span>
-  </> })
+  lines.push({
+    content: (
+      <>
+        <span className={VSCODE_TOKENS.keyword}>type </span>
+        <span className={VSCODE_TOKENS.type}>
+          {category.replace(/[^a-zA-Z]/g, '')}Tier
+        </span>
+        <span className={VSCODE_TOKENS.punct}> = </span>
+        <span className={VSCODE_TOKENS.string}>'expert'</span>
+        <span className={VSCODE_TOKENS.punct}> | </span>
+        <span className={VSCODE_TOKENS.string}>'proficient'</span>
+        <span className={VSCODE_TOKENS.punct}> | </span>
+        <span className={VSCODE_TOKENS.string}>'familiar'</span>
+      </>
+    ),
+  })
 
   return (
     <div className="space-y-0">

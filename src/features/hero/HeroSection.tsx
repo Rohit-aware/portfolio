@@ -20,22 +20,29 @@ const HeroSection: React.FC = memo(() => {
       aria-label="Introduction"
       className="relative flex flex-col pt-14 overflow-x-clip lg:min-h-0"
     >
-      <div aria-hidden="true" className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"
+      />
 
       <div
         aria-hidden="true"
         className="hero-glow w-64 h-64 sm:w-96 sm:h-96 -top-16 right-0 opacity-15 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)' }}
+        style={{
+          background: 'radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)',
+        }}
       />
       <div
         aria-hidden="true"
         className="hero-glow w-40 h-40 sm:w-64 sm:h-64 bottom-40 left-0 opacity-10 pointer-events-none"
-        style={{ background: 'radial-gradient(circle, hsl(var(--gradient-mid)) 0%, transparent 70%)' }}
+        style={{
+          background:
+            'radial-gradient(circle, hsl(var(--gradient-mid)) 0%, transparent 70%)',
+        }}
       />
 
       <div className="section-container relative z-10 w-full pt-6 sm:pt-10 lg:pt-16 pb-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
-
           <div className="flex flex-col min-w-0">
             <HeroBadge />
 
@@ -72,8 +79,16 @@ const HeroSection: React.FC = memo(() => {
               style={{ animationDelay: '380ms', animationFillMode: 'both' }}
             >
               <div className="flex items-center gap-2 sm:gap-3">
-                {FLAGS.SECTION_PROJECTS && <button onClick={toProjects} className="btn-primary">View Projects</button>}
-                {FLAGS.SECTION_CONTACT && <button onClick={toContact} className="btn-outline">Get in Touch</button>}
+                {FLAGS.SECTION_PROJECTS && (
+                  <button onClick={toProjects} className="btn-primary">
+                    View Projects
+                  </button>
+                )}
+                {FLAGS.SECTION_CONTACT && (
+                  <button onClick={toContact} className="btn-outline">
+                    Get in Touch
+                  </button>
+                )}
               </div>
               <div className="flex items-center gap-2 mt-3">
                 <HeroSocials />

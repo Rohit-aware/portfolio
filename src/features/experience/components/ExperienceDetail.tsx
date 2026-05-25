@@ -34,14 +34,22 @@ const ExperienceDetail: React.FC<ExperienceDetailProps> = memo(({ exp }) => (
     <ul className="space-y-2.5 mb-5">
       {exp.responsibilities.map((r, i) => (
         <li key={i} className="flex gap-2.5 text-sm text-muted-foreground">
-          <ChevronRight size={14} className="text-primary shrink-0 mt-0.5" aria-hidden="true" />
+          <ChevronRight
+            size={14}
+            className="text-primary shrink-0 mt-0.5"
+            aria-hidden="true"
+          />
           <span className="leading-relaxed">{r}</span>
         </li>
       ))}
     </ul>
 
     <div className="flex flex-wrap gap-1.5 pt-4 border-t border-border">
-      {exp.techStack.map(t => <span key={t} className="tag">{t}</span>)}
+      {exp.techStack.map((t) => (
+        <span key={t} className="tag">
+          {t}
+        </span>
+      ))}
     </div>
   </div>
 ))

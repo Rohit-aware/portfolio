@@ -1,8 +1,3 @@
-/* ─────────────────────────────────────────────────────────────
-   GLOBAL TYPE DEFINITIONS
-   Single source of truth · strict · no any
-   ───────────────────────────────────────────────────────────── */
-
 export type ThemeMode = 'dark' | 'light' | 'system'
 
 export type SkillTier = 'expert' | 'proficient' | 'familiar'
@@ -87,4 +82,3 @@ export interface ContactFormData {
 }
 
 export type ContactFormStatus = 'idle' | 'sending' | 'success' | 'error'
-

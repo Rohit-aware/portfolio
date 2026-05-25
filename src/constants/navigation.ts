@@ -29,7 +29,7 @@ export const SITE_META: SiteConfig = {
   React Native Developer with 3+ years of experience building scalable and high-performance mobile applications for Android and iOS.
   Skilled in modern React Native architecture, performance optimization, and implementing complex UI interactions.
   Passionate about writing clean, maintainable code and delivering seamless mobile experiences.
-  `
+  `,
 } as const
 
 export const NAV_ITEMS: readonly NavItem[] = [
@@ -41,4 +41,4 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { id: 'contact', label: 'Contact' },
 ] as const
 
-export const SECTION_IDS: readonly string[] = NAV_ITEMS.map(n => n.id)
+export const SECTION_IDS: readonly string[] = NAV_ITEMS.map((n) => n.id)

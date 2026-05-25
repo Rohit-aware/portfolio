@@ -16,12 +16,28 @@ export interface TierStyle {
   readonly textFill: string
 }
 
-export const TIER_ORDER: readonly SkillTier[] = ['expert', 'proficient', 'familiar'] as const
+export const TIER_ORDER: readonly SkillTier[] = [
+  'expert',
+  'proficient',
+  'familiar',
+] as const
 
 export const TIER_CFG: Record<SkillTier, TierCfg> = {
-  expert: { dot: 'bg-primary', pill: 'bg-primary/15 border-primary/30 text-primary font-semibold', label: 'Expert' },
-  proficient: { dot: 'bg-muted-foreground', pill: 'bg-surface border-border text-foreground', label: 'Proficient' },
-  familiar: { dot: 'bg-muted-foreground opacity-40', pill: 'bg-transparent border-border/50 text-muted-foreground', label: 'Familiar' },
+  expert: {
+    dot: 'bg-primary',
+    pill: 'bg-primary/15 border-primary/30 text-primary font-semibold',
+    label: 'Expert',
+  },
+  proficient: {
+    dot: 'bg-muted-foreground',
+    pill: 'bg-surface border-border text-foreground',
+    label: 'Proficient',
+  },
+  familiar: {
+    dot: 'bg-muted-foreground opacity-40',
+    pill: 'bg-transparent border-border/50 text-muted-foreground',
+    label: 'Familiar',
+  },
 }
 
 export const TIER_STYLE: Record<SkillTier, TierStyle> = {

@@ -6,32 +6,34 @@ import AnimatedCursor from '@/animations/AnimatedCursor'
 import AnalyticsBadge from '@/components/ui/AnalyticsBadge'
 import { useTheme } from '@/features/theme/hooks/useTheme'
 import { FLAGS } from '@/config/featureFlags'
-
+import { useSessionTracking } from '@/features/analytics/hooks/useSessionTracking'
 import SecuritySystem from '@/components/security/SecuritySystem'
-
-/**
- * App — root shell.
- * Composes global overlays and page layout.
- * ScrollIndicator removed per architecture decision (rule 9).
- */
+import { ErrorBoundary } from '@/features/analytics-logger/components/ErrorBoundary'
+import { useGlobalErrorTracking } from '@/features/analytics-logger/hooks/useGlobalErrorTracking'
 
 const PortfolioChat = lazy(() => import('@/components/ui/PortfolioChat'))
 
 const App: React.FC = memo(() => {
   const { isDark, toggleTheme, theme } = useTheme()
+  useSessionTracking()
+  useGlobalErrorTracking()
 
   return (
-    <>
+    <ErrorBoundary>
       <SecuritySystem />
       {FLAGS.ANIMATED_CURSOR && <AnimatedCursor />}
-      {FLAGS.PORTFOLIO_CHAT && <Suspense fallback={null}><PortfolioChat /></Suspense>}
+      {FLAGS.PORTFOLIO_CHAT && (
+        <Suspense fallback={null}>
+          <PortfolioChat />
+        </Suspense>
+      )}
       {FLAGS.PORTFOLIO_ANYALYTICS && <AnalyticsBadge />}
       <div className="min-h-screen bg-background text-foreground">
         <Navbar isDark={isDark} onToggleTheme={toggleTheme} theme={theme} />
         <Home />
         <Footer />
       </div>
-    </>
+    </ErrorBoundary>
   )
 })
 
