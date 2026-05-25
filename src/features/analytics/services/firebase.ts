@@ -62,7 +62,8 @@ export class FirebaseService {
         }
 
         this._app = initializeApp(firebaseConfig)
-        this._db = getFirestore(this._app)
+        const databaseId = import.meta.env.VITE_FIREBASE_DATABASE_ID
+        this._db = databaseId ? getFirestore(this._app, databaseId) : getFirestore(this._app)
 
         const supported = await isSupported()
         if (supported) {

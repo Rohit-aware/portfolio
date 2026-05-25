@@ -10,13 +10,18 @@ import { useSessionTracking } from '@/features/analytics/hooks/useSessionTrackin
 import SecuritySystem from '@/components/security/SecuritySystem'
 import { ErrorBoundary } from '@/features/analytics-logger/components/ErrorBoundary'
 import { useGlobalErrorTracking } from '@/features/analytics-logger/hooks/useGlobalErrorTracking'
+import { useAnalyticsKeyboardShortcut } from '@/features/analytics/hooks/useAnalyticsKeyboardShortcut'
+import { useDashboardStore } from '@/features/analytics/store/dashboardStore'
 
 const PortfolioChat = lazy(() => import('@/components/ui/PortfolioChat'))
+const AnalyticsDashboardOverlay = lazy(() => import('@/features/analytics/components/AnalyticsDashboardOverlay'))
 
 const App: React.FC = memo(() => {
   const { isDark, toggleTheme, theme } = useTheme()
   useSessionTracking()
   useGlobalErrorTracking()
+  useAnalyticsKeyboardShortcut()
+  const isOpen = useDashboardStore((state) => state.isOpen)
 
   return (
     <ErrorBoundary>
@@ -28,6 +33,11 @@ const App: React.FC = memo(() => {
         </Suspense>
       )}
       {FLAGS.PORTFOLIO_ANYALYTICS && <AnalyticsBadge />}
+      {isOpen && (
+        <Suspense fallback={null}>
+          <AnalyticsDashboardOverlay />
+        </Suspense>
+      )}
       <div className="min-h-screen bg-background text-foreground">
         <Navbar isDark={isDark} onToggleTheme={toggleTheme} theme={theme} />
         <Home />

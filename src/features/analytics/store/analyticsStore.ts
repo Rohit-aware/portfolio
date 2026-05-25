@@ -2,14 +2,14 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { logError } from '@/features/analytics-logger/facade/logError'
 import { mmkvStorage } from '@/shared/store/mmkv'
-import { generateSessionId } from '../utils/session'
+import { generateSessionId, getOrCreateVisitorId } from '../utils/session'
 import { getOS, getBrowser, getDeviceType } from '../utils/platform'
 import { getReferrerSource } from '../utils/referrer'
-import { calculateDurationMs } from '../utils/duration'
 import {
   createSession,
   updateSession,
-  incrementVisitCount,
+  registerSessionAndIncrementCounters,
+  listenToGlobalCounters,
 } from '../services/firestoreService'
 import { logAnalyticsEvent } from '../services/analyticsService'
 import { SessionDocument } from '../types/analytics.types'
@@ -24,19 +24,22 @@ import {
 import { ErrorSeverity } from '@/shared/domain/errorSeverity'
 import { AnalyticsEvent } from '@/shared/domain/analyticsEvent'
 
-const SESSION_SK = 'ra-visited'
-
 export interface AnalyticsState {
   visitCount: number
   isNewVisit: boolean
   isLoading: boolean
   hasRecorded: boolean
   sessionId: string
+  visitorId: string
   startedAt: number
+  lastVisitAt: number
   pagesVisited: string[]
   interactions: string[]
   resumeDownloaded: boolean
   contactSubmitted: boolean
+  isHydrated: boolean
+  analyticsInitialized: boolean
+  setHydrated: (val: boolean) => void
   recordVisit: () => Promise<void>
   initializeTrackingSession: () => Promise<void>
   trackInteraction: (event: string) => Promise<void>
@@ -54,192 +57,320 @@ export const useAnalyticsStore = create<AnalyticsState>()(
       isLoading: true,
       hasRecorded: false,
       sessionId: '',
+      visitorId: '',
       startedAt: 0,
+      lastVisitAt: 0,
       pagesVisited: [],
       interactions: [],
       resumeDownloaded: false,
       contactSubmitted: false,
+      isHydrated: false,
+      analyticsInitialized: false,
+
+      setHydrated: (val: boolean) => set({ isHydrated: val }),
 
       recordVisit: async () => {
-        if (get().hasRecorded) return
-
-        set({ isLoading: true })
-        const isNewVisit = !sessionStorage.getItem(SESSION_SK)
-        if (isNewVisit) {
-          sessionStorage.setItem(SESSION_SK, '1')
-        }
-
-        try {
-          const total = await incrementVisitCount(isNewVisit)
-          if (total > 0) {
-            set({
-              visitCount: total,
-              isNewVisit,
-              isLoading: false,
-              hasRecorded: true,
-            })
-          } else {
-            const current = get().visitCount
-            set({
-              visitCount: isNewVisit ? current + 1 : current,
-              isNewVisit,
-              isLoading: false,
-              hasRecorded: true,
-            })
-          }
-        } catch (error) {
-          logError(error, ErrorSeverity.MEDIUM, true)
-          const current = get().visitCount
-          set({
-            visitCount: isNewVisit ? current + 1 : current,
-            isNewVisit,
-            isLoading: false,
-            hasRecorded: true,
-          })
-        }
+        set({ isLoading: false })
       },
 
       initializeTrackingSession: async () => {
-        let sid = sessionStorage.getItem(SESSION_ID_KEY)
-        let startTimeStr = sessionStorage.getItem(SESSION_START_KEY)
-        let isNew = false
+        if (get().analyticsInitialized) return
+        set({ analyticsInitialized: true })
 
-        if (!sid || !startTimeStr) {
-          sid = generateSessionId()
-          startTimeStr = String(Date.now())
-          sessionStorage.setItem(SESSION_ID_KEY, sid)
-          sessionStorage.setItem(SESSION_START_KEY, startTimeStr)
-          isNew = true
+        listenToGlobalCounters((count) => {
+          set({ visitCount: count })
+        })
+
+        let vid = get().visitorId
+        let isNewVisitor = false
+        if (!vid) {
+          const storedVid = localStorage.getItem('analytics:v1:visitorId')
+          isNewVisitor = !storedVid
+          vid = getOrCreateVisitorId()
+          set({ visitorId: vid })
         }
 
-        const startTime = parseInt(startTimeStr, 10)
+        let resolvedSessionId = ''
+        let resolvedStartedAt = 0
+        let isNewSession = false
+
+        if (typeof BroadcastChannel !== 'undefined') {
+          const channel = new BroadcastChannel('portfolio_analytics_channel')
+
+          channel.onmessage = (event) => {
+            if (event.data?.type === 'REQUEST_SESSION') {
+              const current = get()
+              if (current.sessionId) {
+                channel.postMessage({
+                  type: 'SESSION_RESPONSE',
+                  sessionId: current.sessionId,
+                  visitorId: current.visitorId,
+                  startedAt: current.startedAt,
+                })
+              }
+            }
+          }
+
+          const sessionPromise = new Promise<{ sessionId: string; startedAt: number } | null>((resolve) => {
+            const timer = setTimeout(() => resolve(null), 150)
+
+            const tempListener = (event: MessageEvent) => {
+              if (event.data?.type === 'SESSION_RESPONSE') {
+                clearTimeout(timer)
+                channel.removeEventListener('message', tempListener)
+                resolve({
+                  sessionId: event.data.sessionId,
+                  startedAt: event.data.startedAt,
+                })
+              }
+            }
+            channel.addEventListener('message', tempListener)
+            channel.postMessage({ type: 'REQUEST_SESSION' })
+          })
+
+          const existingSession = await sessionPromise
+          if (existingSession) {
+            resolvedSessionId = existingSession.sessionId
+            resolvedStartedAt = existingSession.startedAt
+          }
+        }
+
+        const now = Date.now()
+        const lastVisit = get().lastVisitAt || 0
+        const sessionTimeout = 30 * 60 * 1000
+        const isExpired = now - lastVisit > sessionTimeout
+
+        if (!resolvedSessionId) {
+          const sessionStorageId = sessionStorage.getItem(SESSION_ID_KEY)
+          const sessionStorageStart = sessionStorage.getItem(SESSION_START_KEY)
+
+          if (sessionStorageId && sessionStorageStart && !isExpired) {
+            resolvedSessionId = sessionStorageId
+            resolvedStartedAt = parseInt(sessionStorageStart, 10)
+          } else {
+            resolvedSessionId = generateSessionId()
+            resolvedStartedAt = now
+            sessionStorage.setItem(SESSION_ID_KEY, resolvedSessionId)
+            sessionStorage.setItem(SESSION_START_KEY, String(now))
+            isNewSession = true
+          }
+        }
+
+        set({
+          sessionId: resolvedSessionId,
+          startedAt: resolvedStartedAt,
+          lastVisitAt: now,
+          isNewVisit: isNewSession,
+          isLoading: false,
+          hasRecorded: true,
+        })
 
         let localPages: string[] = []
         try {
           localPages = JSON.parse(sessionStorage.getItem(SESSION_PAGES_KEY) || '[]')
-        } catch (e) {}
+        } catch (e) { }
 
         let localInteractions: string[] = []
         try {
           localInteractions = JSON.parse(
             sessionStorage.getItem(SESSION_INTERACTIONS_KEY) || '[]',
           )
-        } catch (e) {}
+        } catch (e) { }
 
         const resumeDownloaded = sessionStorage.getItem(SESSION_RESUME_KEY) === 'true'
         const contactSubmitted = sessionStorage.getItem(SESSION_CONTACT_KEY) === 'true'
 
         set({
-          sessionId: sid,
-          startedAt: startTime,
           pagesVisited: localPages,
           interactions: localInteractions,
           resumeDownloaded,
           contactSubmitted,
         })
 
-        if (isNew) {
-          const initialPages =
-            localPages.length > 0 ? localPages : [window.location.pathname || '/']
-          if (localPages.length === 0) {
-            sessionStorage.setItem(SESSION_PAGES_KEY, JSON.stringify(initialPages))
-            set({ pagesVisited: initialPages })
-          }
+        if (isNewSession || isNewVisitor) {
+          try {
+            await logAnalyticsEvent(AnalyticsEvent.SESSION_START, { sessionId: resolvedSessionId })
 
-          const sessionDoc: SessionDocument = {
-            sessionId: sid,
-            startedAt: startTime,
-            endedAt: startTime,
-            durationMs: 0,
-            landingPage: window.location.pathname || '/',
-            pagesVisited: initialPages,
-            browser: getBrowser(),
-            os: getOS(),
-            deviceType: getDeviceType(),
-            referrer: getReferrerSource(),
-            viewport: {
-              width: window.innerWidth,
-              height: window.innerHeight,
-            },
-            interactions: localInteractions,
-            resumeDownloaded,
-            contactSubmitted,
+            const initialPages =
+              localPages.length > 0 ? localPages : [window.location.pathname || '/']
+            if (localPages.length === 0) {
+              sessionStorage.setItem(SESSION_PAGES_KEY, JSON.stringify(initialPages))
+              set({ pagesVisited: initialPages })
+            }
+
+            const sessionDoc: SessionDocument = {
+              sessionId: resolvedSessionId,
+              visitorId: vid,
+              startedAt: resolvedStartedAt,
+              endedAt: now,
+              lastHeartbeatAt: now,
+              durationMs: 0,
+              landingPage: window.location.pathname || '/',
+              pagesVisited: initialPages,
+              browser: getBrowser(),
+              os: getOS(),
+              deviceType: getDeviceType(),
+              referrer: getReferrerSource(),
+              viewport: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+              },
+              interactions: localInteractions,
+              resumeDownloaded,
+              contactSubmitted,
+            }
+
+            const finalVisits = await registerSessionAndIncrementCounters(
+              vid,
+              isNewVisitor,
+              isNewSession,
+              getDeviceType(),
+              getBrowser(),
+              getOS()
+            )
+
+            if (finalVisits > 0) {
+              set({ visitCount: finalVisits })
+            }
+
+            await createSession(sessionDoc)
+          } catch (error) {
+            logError(error, ErrorSeverity.MEDIUM, true)
           }
-          await createSession(sessionDoc)
-          await logAnalyticsEvent(AnalyticsEvent.SESSION_START, { sessionId: sid })
+        }
+
+        const heartbeatInterval = setInterval(async () => {
+          try {
+            const current = get()
+            if (!current.sessionId) return
+
+            const currentNow = Date.now()
+            const duration = currentNow - current.startedAt
+
+            const updates: Partial<SessionDocument> = {
+              endedAt: currentNow,
+              lastHeartbeatAt: currentNow,
+              durationMs: duration,
+              pagesVisited: current.pagesVisited,
+              interactions: current.interactions,
+              resumeDownloaded: current.resumeDownloaded,
+              contactSubmitted: current.contactSubmitted,
+            }
+
+            await updateSession(current.sessionId, updates)
+          } catch (error) {
+            logError(error, ErrorSeverity.LOW, true)
+          }
+        }, 20000)
+
+        const cleanup = () => {
+          clearInterval(heartbeatInterval)
+        }
+
+        if (typeof window !== 'undefined') {
+          (window as any)._analyticsCleanup = cleanup
         }
       },
 
       trackInteraction: async (event: string) => {
-        const { sessionId, interactions } = get()
-        if (!sessionId) return
+        try {
+          const { sessionId, interactions } = get()
+          if (!sessionId) return
 
-        const updated = [...interactions, event]
-        set({ interactions: updated })
-        sessionStorage.setItem(SESSION_INTERACTIONS_KEY, JSON.stringify(updated))
+          const updated = [...interactions, event]
+          set({ interactions: updated, lastVisitAt: Date.now() })
+          sessionStorage.setItem(SESSION_INTERACTIONS_KEY, JSON.stringify(updated))
 
-        await logAnalyticsEvent(event, { sessionId })
+          await logAnalyticsEvent(event, { sessionId })
+        } catch (error) {
+          logError(error, ErrorSeverity.LOW, true)
+        }
       },
 
       trackPageVisit: async (page: string) => {
-        const { sessionId, pagesVisited } = get()
-        if (!sessionId) return
+        try {
+          const { sessionId, pagesVisited } = get()
+          if (!sessionId) return
 
-        if (pagesVisited.includes(page)) return
+          if (pagesVisited.includes(page)) return
 
-        const updated = [...pagesVisited, page]
-        set({ pagesVisited: updated })
-        sessionStorage.setItem(SESSION_PAGES_KEY, JSON.stringify(updated))
+          const updated = [...pagesVisited, page]
+          set({ pagesVisited: updated, lastVisitAt: Date.now() })
+          sessionStorage.setItem(SESSION_PAGES_KEY, JSON.stringify(updated))
 
-        await logAnalyticsEvent(AnalyticsEvent.PAGE_VIEW, { sessionId, page })
+          await logAnalyticsEvent(AnalyticsEvent.PAGE_VIEW, { sessionId, page })
+        } catch (error) {
+          logError(error, ErrorSeverity.LOW, true)
+        }
       },
 
       setResumeDownloaded: async () => {
-        const { sessionId } = get()
-        if (!sessionId) return
+        try {
+          const { sessionId } = get()
+          if (!sessionId) return
 
-        set({ resumeDownloaded: true })
-        sessionStorage.setItem(SESSION_RESUME_KEY, 'true')
-        await logAnalyticsEvent(AnalyticsEvent.RESUME_DOWNLOADED, { sessionId })
+          set({ resumeDownloaded: true, lastVisitAt: Date.now() })
+          sessionStorage.setItem(SESSION_RESUME_KEY, 'true')
+          await logAnalyticsEvent(AnalyticsEvent.RESUME_DOWNLOADED, { sessionId })
+        } catch (error) {
+          logError(error, ErrorSeverity.LOW, true)
+        }
       },
 
       setContactSubmitted: async () => {
-        const { sessionId } = get()
-        if (!sessionId) return
+        try {
+          const { sessionId } = get()
+          if (!sessionId) return
 
-        set({ contactSubmitted: true })
-        sessionStorage.setItem(SESSION_CONTACT_KEY, 'true')
-        await logAnalyticsEvent(AnalyticsEvent.CONTACT_SUBMITTED, { sessionId })
+          set({ contactSubmitted: true, lastVisitAt: Date.now() })
+          sessionStorage.setItem(SESSION_CONTACT_KEY, 'true')
+          await logAnalyticsEvent(AnalyticsEvent.CONTACT_SUBMITTED, { sessionId })
+        } catch (error) {
+          logError(error, ErrorSeverity.LOW, true)
+        }
       },
 
       flushSession: async () => {
-        const {
-          sessionId,
-          startedAt,
-          pagesVisited,
-          interactions,
-          resumeDownloaded,
-          contactSubmitted,
-        } = get()
-        if (!sessionId || !startedAt) return
+        try {
+          const {
+            sessionId,
+            startedAt,
+            pagesVisited,
+            interactions,
+            resumeDownloaded,
+            contactSubmitted,
+          } = get()
+          if (!sessionId || !startedAt) return
 
-        const duration = calculateDurationMs(startedAt)
-        const updates: Partial<SessionDocument> = {
-          endedAt: Date.now(),
-          durationMs: duration,
-          pagesVisited,
-          interactions,
-          resumeDownloaded,
-          contactSubmitted,
+          const duration = Date.now() - startedAt
+          const updates: Partial<SessionDocument> = {
+            endedAt: Date.now(),
+            durationMs: duration,
+            pagesVisited,
+            interactions,
+            resumeDownloaded,
+            contactSubmitted,
+          }
+
+          await updateSession(sessionId, updates)
+        } catch (error) {
+          logError(error, ErrorSeverity.LOW, true)
         }
-
-        await updateSession(sessionId, updates)
       },
     }),
     {
       name: 'ra-visit-count',
       storage: mmkvStorage,
-      partialize: (state) => ({ visitCount: state.visitCount }),
+      partialize: (state) => ({
+        visitCount: state.visitCount,
+        visitorId: state.visitorId,
+        lastVisitAt: state.lastVisitAt,
+      }),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.setHydrated(true)
+        }
+      },
     },
   ),
 )

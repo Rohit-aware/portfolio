@@ -22,9 +22,20 @@ export function useSessionTracking(): void {
   useEffect(() => {
     initializeTrackingSession()
 
+    let lastUpdate = 0
+    const handleUserActivity = () => {
+      const now = Date.now()
+      if (now - lastUpdate > 5000) {
+        lastUpdate = now
+        useAnalyticsStore.setState({ lastVisitAt: now })
+      }
+    }
+
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         flushSession()
+      } else if (document.visibilityState === 'visible') {
+        handleUserActivity()
       }
     }
 
@@ -33,6 +44,7 @@ export function useSessionTracking(): void {
     }
 
     const handleGlobalClick = (event: MouseEvent) => {
+      handleUserActivity()
       const target = event.target as HTMLElement
       const anchor = target.closest('a')
       if (!anchor) return
@@ -54,6 +66,9 @@ export function useSessionTracking(): void {
     window.addEventListener('beforeunload', handleBeforeUnload)
     window.addEventListener('pagehide', handleBeforeUnload)
     document.addEventListener('click', handleGlobalClick)
+    document.addEventListener('mousemove', handleUserActivity)
+    document.addEventListener('keydown', handleUserActivity)
+    document.addEventListener('scroll', handleUserActivity)
 
     const intervalId = setInterval(() => {
       if (document.visibilityState === 'visible') {
@@ -66,6 +81,9 @@ export function useSessionTracking(): void {
       window.removeEventListener('beforeunload', handleBeforeUnload)
       window.removeEventListener('pagehide', handleBeforeUnload)
       document.removeEventListener('click', handleGlobalClick)
+      document.removeEventListener('mousemove', handleUserActivity)
+      document.removeEventListener('keydown', handleUserActivity)
+      document.removeEventListener('scroll', handleUserActivity)
       clearInterval(intervalId)
     }
   }, [initializeTrackingSession, flushSession, trackInteraction])
