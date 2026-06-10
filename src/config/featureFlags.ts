@@ -13,6 +13,7 @@ export const FLAGS = {
   SECTION_SKILLS: true,
   SECTION_PROJECTS: true,
   SECTION_EXPERIENCE: true,
+  SECTION_LABS: true,
   SECTION_CONTACT: true,
   /*
   Hover me emoji cloud — low priority, just for fun. Kept separate from core hero flags for easier toggling without affecting critical path.

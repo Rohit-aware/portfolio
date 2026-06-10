@@ -8,6 +8,7 @@ export type SkillCategory =
   | 'State Management'
   | 'Backend, Baas, Cloude & APIs'
   | 'DevOps & Tools'
+  | 'AI & Open Source'
 
 export type ProjectCategory =
   | 'Client Management'
@@ -82,3 +83,21 @@ export interface ContactFormData {
 }
 
 export type ContactFormStatus = 'idle' | 'sending' | 'success' | 'error'
+
+export type LabProjectType = 'npm-package' | 'ai-project'
+
+export interface LabProject {
+  readonly id: string
+  readonly title: string
+  readonly description: string
+  readonly type: LabProjectType
+  readonly techStack: readonly string[]
+  readonly highlights: readonly string[]
+  readonly npmUrl?: string
+  readonly githubUrl?: string
+  readonly version?: string
+  readonly installCommand?: string
+  readonly keyLearnings?: readonly string[]
+  readonly lastUpdated?: string
+  readonly language?: string
+}

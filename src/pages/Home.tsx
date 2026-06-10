@@ -5,6 +5,7 @@ import { FLAGS } from '@/config/featureFlags'
 const AboutSection = lazy(() => import('@/features/about/AboutSection'))
 const SkillsSection = lazy(() => import('@/features/skills/SkillsSection'))
 const ProjectsSection = lazy(() => import('@/features/projects/ProjectsSection'))
+const LabsSection = lazy(() => import('@/features/labs/LabsSection'))
 const ExperienceSection = lazy(() => import('@/features/experience/ExperienceSection'))
 const ContactSection = lazy(() => import('@/features/contact/ContactSection'))
 
@@ -32,6 +33,11 @@ const Home: React.FC = memo(() => (
     {FLAGS.SECTION_PROJECTS && (
       <Suspense fallback={<SectionSkeleton />}>
         <ProjectsSection />
+      </Suspense>
+    )}
+    {FLAGS.SECTION_LABS && (
+      <Suspense fallback={<SectionSkeleton />}>
+        <LabsSection />
       </Suspense>
     )}
     {FLAGS.SECTION_EXPERIENCE && (

@@ -115,4 +115,39 @@ export const SKILLS_DATA: readonly SkillGroup[] = [
       },
     ],
   },
+  {
+    category: 'AI & Open Source',
+    skills: [
+      {
+        id: 'claude-api',
+        name: 'Claude API',
+        tier: 'proficient',
+        category: 'AI & Open Source',
+      },
+      {
+        id: 'llm-integration',
+        name: 'LLM Integration',
+        tier: 'proficient',
+        category: 'AI & Open Source',
+      },
+      {
+        id: 'sse-streaming',
+        name: 'SSE Streaming',
+        tier: 'proficient',
+        category: 'AI & Open Source',
+      },
+      {
+        id: 'prompt-engineering',
+        name: 'Prompt Engineering',
+        tier: 'familiar',
+        category: 'AI & Open Source',
+      },
+      {
+        id: 'npm-publishing',
+        name: 'npm Package Publishing',
+        tier: 'proficient',
+        category: 'AI & Open Source',
+      },
+    ],
+  },
 ] as const
