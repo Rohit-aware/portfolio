@@ -24,7 +24,7 @@ export const SITE_META: SiteConfig = {
   workLocation: 'Mumbai, Maharashtra, India',
   linkedIn: 'https://www.linkedin.com/in/rohitaware',
   github: 'https://github.com/Rohit-aware',
-  resumeUrl: '../../public/Rohit_Aware_Resume.pdf',
+  resumeUrl: `${import.meta.env.BASE_URL}Rohit_Aware_React_Native_Developer.docx`,
   description: `
   React Native Developer with 3+ years of experience building scalable and high-performance mobile applications for Android and iOS.
   Skilled in modern React Native architecture, performance optimization, and implementing complex UI interactions.

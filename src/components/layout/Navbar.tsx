@@ -223,7 +223,7 @@ const Navbar: React.FC<NavbarProps> = memo(({ isDark, onToggleTheme }) => {
 
               <a
                 onClick={downloadResume}
-                aria-label="Download resume PDF"
+                aria-label="Download resume"
                 className="hidden sm:inline-flex btn-primary py-1.5 px-3 text-xs gap-1.5"
               >
                 <FileText size={12} aria-hidden="true" /> Resume
