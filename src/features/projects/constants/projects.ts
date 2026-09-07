@@ -3,6 +3,7 @@ import ClmsImage from './projectImages/clms-all.webp'
 import TrolleyImage from './projectImages/trolly-all.webp'
 import MaakImage from './projectImages/maak-all.webp'
 import FantasyImage from './projectImages/fantasy-all.webp'
+import TaqsetImage from './projectImages/taqset-all.webp'
 
 export const PROJECTS_DATA: readonly Project[] = [
   {
@@ -168,12 +169,12 @@ export const PROJECTS_DATA: readonly Project[] = [
     ],
 
     hasMigration: false,
-    isOngoing: true,
+    isOngoing: false,
 
     migrationDetails:
       'Upgraded React Native from v0.64 → v0.79 and refactored modules to support BNPL payment flows and QR payment features.',
 
     portfolioUrl: 'https://www.mypcot.com/portfolio/maak',
-    projectImageUrl: './projectImages/bnpl-all.png',
+    projectImageUrl: TaqsetImage,
   },
 ] as const

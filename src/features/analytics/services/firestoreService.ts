@@ -4,11 +4,12 @@ import { SessionDocument, DashboardAnalyticsData } from '../types/analytics.type
 import { logError } from '@/features/analytics-logger/facade/logError'
 import { ErrorSeverity } from '@/shared/domain/errorSeverity'
 import { generateMockDashboardData } from './mockAnalyticsService'
+import { isDevEnvironment } from '@/shared/utils/env'
 
 export class FirestoreService {
   private static instance: FirestoreService | null = null
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): FirestoreService {
     if (!FirestoreService.instance) {
@@ -18,6 +19,9 @@ export class FirestoreService {
   }
 
   public async createSession(session: SessionDocument): Promise<void> {
+    if (isDevEnvironment()) {
+      return
+    }
     const service = FirebaseService.getInstance()
     await service.initialize()
 
@@ -37,6 +41,10 @@ export class FirestoreService {
     sessionId: string,
     updates: Partial<SessionDocument>,
   ): Promise<void> {
+    if (isDevEnvironment()) {
+      return
+    }
+
     const service = FirebaseService.getInstance()
     await service.initialize()
 
@@ -65,6 +73,18 @@ export class FirestoreService {
 
     if (service.isMockMode || !service.db) {
       return 0
+    }
+
+    if (isDevEnvironment()) {
+      try {
+        const { doc, getDoc } = await import('firebase/firestore')
+        const globalRef = doc(service.db, 'counters', 'global')
+        const globalSnap = await getDoc(globalRef)
+        return globalSnap.exists() ? (globalSnap.data()?.totalVisits ?? 0) : 0
+      } catch (error) {
+        logError(error, ErrorSeverity.LOW, false)
+        return 0
+      }
     }
 
     try {
@@ -156,7 +176,7 @@ export class FirestoreService {
           },
           { merge: true }
         )
-      } catch (fallbackErr) {}
+      } catch (fallbackErr) { }
 
       return 0
     }
@@ -181,10 +201,10 @@ export class FirestoreService {
               onUpdate(count)
             }
           },
-          () => {}
+          () => { }
         )
-      }).catch(() => {})
-    }).catch(() => {})
+      }).catch(() => { })
+    }).catch(() => { })
 
     return () => {
       active = false

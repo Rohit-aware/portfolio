@@ -23,6 +23,7 @@ import {
 } from '../constants/analytics'
 import { ErrorSeverity } from '@/shared/domain/errorSeverity'
 import { AnalyticsEvent } from '@/shared/domain/analyticsEvent'
+import { isDevEnvironment } from '@/shared/utils/env'
 
 export interface AnalyticsState {
   visitCount: number
@@ -160,7 +161,7 @@ export const useAnalyticsStore = create<AnalyticsState>()(
           sessionId: resolvedSessionId,
           startedAt: resolvedStartedAt,
           lastVisitAt: now,
-          isNewVisit: isNewSession,
+          isNewVisit: isDevEnvironment() ? false : isNewSession,
           isLoading: false,
           hasRecorded: true,
         })
@@ -189,14 +190,29 @@ export const useAnalyticsStore = create<AnalyticsState>()(
 
         if (isNewSession || isNewVisitor) {
           try {
-            await logAnalyticsEvent(AnalyticsEvent.SESSION_START, { sessionId: resolvedSessionId })
-
             const initialPages =
               localPages.length > 0 ? localPages : [window.location.pathname || '/']
             if (localPages.length === 0) {
               sessionStorage.setItem(SESSION_PAGES_KEY, JSON.stringify(initialPages))
               set({ pagesVisited: initialPages })
             }
+
+            if (isDevEnvironment()) {
+              const currentVisits = await registerSessionAndIncrementCounters(
+                vid,
+                false,
+                false,
+                getDeviceType(),
+                getBrowser(),
+                getOS()
+              )
+              if (currentVisits > 0) {
+                set({ visitCount: currentVisits })
+              }
+              return
+            }
+
+            await logAnalyticsEvent(AnalyticsEvent.SESSION_START, { sessionId: resolvedSessionId })
 
             const sessionDoc: SessionDocument = {
               sessionId: resolvedSessionId,
@@ -241,6 +257,7 @@ export const useAnalyticsStore = create<AnalyticsState>()(
 
         const heartbeatInterval = setInterval(async () => {
           try {
+            if (isDevEnvironment()) return
             const current = get()
             if (!current.sessionId) return
 
@@ -332,6 +349,7 @@ export const useAnalyticsStore = create<AnalyticsState>()(
 
       flushSession: async () => {
         try {
+          if (isDevEnvironment()) return
           const {
             sessionId,
             startedAt,

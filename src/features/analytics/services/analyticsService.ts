@@ -2,11 +2,12 @@ import { FirebaseService } from './firebase'
 import { logError } from '@/features/analytics-logger/facade/logError'
 import { ErrorSeverity } from '@/shared/domain/errorSeverity'
 import { AnalyticsEventType } from '@/shared/domain/analyticsEvent'
+import { isDevEnvironment } from '@/shared/utils/env'
 
 export class AnalyticsService {
   private static instance: AnalyticsService | null = null
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance(): AnalyticsService {
     if (!AnalyticsService.instance) {
@@ -16,6 +17,9 @@ export class AnalyticsService {
   }
 
   public async logEvent(eventName: AnalyticsEventType | string, params?: Record<string, any>): Promise<void> {
+    if (isDevEnvironment()) {
+      return
+    }
     const service = FirebaseService.getInstance()
     await service.initialize()
 
