@@ -1,13 +1,13 @@
 import { SITE_META } from '@/constants/navigation'
 import { useAnalyticsStore } from '@/features/analytics/store/analyticsStore'
 
-const RESUME_FILENAME = 'Rohit_Aware_Resume.pdf'
+const RESUME_FILENAME = 'Rohit_Aware_React_Native_Developer.docx'
 
 export const downloadResume = (): void => {
   useAnalyticsStore
     .getState()
     .setResumeDownloaded()
-    .catch(() => {})
+    .catch(() => { })
   const a = document.createElement('a')
   a.href = SITE_META.resumeUrl
   a.download = RESUME_FILENAME
@@ -23,6 +23,6 @@ export const openResume = (): void => {
   useAnalyticsStore
     .getState()
     .setResumeDownloaded()
-    .catch(() => {})
+    .catch(() => { })
   window.open(SITE_META.resumeUrl, '_blank', 'noopener,noreferrer')
 }
