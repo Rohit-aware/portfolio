@@ -31,6 +31,7 @@ export interface SiteConfig {
   readonly workLocation: string
   readonly linkedIn: string
   readonly github: string
+  readonly resumeFileName: string
   readonly resumeUrl: string
 }
 

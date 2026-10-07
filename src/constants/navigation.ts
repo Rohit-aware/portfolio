@@ -1,20 +1,6 @@
 import type { NavItem, SiteConfig } from '@/types'
 
-// export const SITE_META: SiteConfig = {
-//   name: 'Rohit Aware',
-//   email: 'awarerohit01@gmail.com',
-//   location: 'Pune, Maharashtra, India',
-//   workLocation: 'Mumbai, Maharashtra, India',
-//   linkedIn: 'https://www.linkedin.com/in/rohitaware',
-//   github: 'https://github.com/rohitaware',
-//   resumeUrl: '/resume-rohit-aware.pdf',
-//   role: 'React Native Developer | Mobile App Engineer',
-//   description: `
-//     React Native Developer with 3+ years of experience building scalable and high-performance mobile applications for Android and iOS.
-//     Skilled in modern React Native architecture, performance optimization, and implementing complex UI interactions.
-//     Passionate about delivering clean, maintainable code and creating seamless mobile experiences.
-//     `
-// } as const
+export const RESUME_FILENAME = 'Rohit_Aware_React_Native_Developer.pdf'
 
 export const SITE_META: SiteConfig = {
   name: 'Rohit Aware',
@@ -24,7 +10,8 @@ export const SITE_META: SiteConfig = {
   workLocation: 'Mumbai, Maharashtra, India',
   linkedIn: 'https://www.linkedin.com/in/rohitaware',
   github: 'https://github.com/Rohit-aware',
-  resumeUrl: `${import.meta.env.BASE_URL}Rohit_Aware_React_Native_Developer.docx`,
+  resumeFileName: RESUME_FILENAME,
+  resumeUrl: `${import.meta.env.BASE_URL}${RESUME_FILENAME}`,
   description: `
   React Native Developer with 3+ years of experience building scalable and high-performance mobile applications for Android and iOS.
   Skilled in modern React Native architecture, performance optimization, and implementing complex UI interactions.
